@@ -1,2 +1,2 @@
-# RP2-BJ
+# Scoutbook
 Web aplikacija za izviđače
