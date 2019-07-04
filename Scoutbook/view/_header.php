@@ -5,7 +5,7 @@
 	<title>Be prepared!</title>
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Fresca|Noto+Sans+HK&display=swap" rel="stylesheet">
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 <body>
 	<div id="username_logout">
@@ -14,15 +14,15 @@
 		<a id="logout" href="scoutbook.php?rt=login/logout">Logout</a>
 	</div>
 	<nav>
-		<ul>
-			<li><a href="scoutbook.php?rt=profil">Moj profil</a></li>
-			<li><a href="scoutbook.php?rt=troop">Odred</a></li>
-			<li><a href="scoutbook.php?rt=troop/patrol">Patrola</a></li>
-			<li><a href="scoutbook.php?rt=troop/activities">Aktivnosti</a></li>
-			<li><a href="scoutbook.php?rt=troop/myactivities">Moje Aktivnosti</a></li>
+		<ul id="nav">
+			<li><a class="nav" id="profil" href="scoutbook.php?rt=profil">Moj profil</a></li>
+			<li><a class="nav" id="odred" href="scoutbook.php?rt=troop">Odred</a></li>
+			<li><a class="nav" id="patrola" href="scoutbook.php?rt=troop/patrol">Patrola</a></li>
+			<li><a class="nav" id="aktivnosti" href="scoutbook.php?rt=troop/activities">Aktivnosti</a></li>
+			<li><a class="nav" id="mojeAktivnosti" href="scoutbook.php?rt=troop/myactivities">Moje Aktivnosti</a></li>
 			<?php if ($_SESSION["voda"]) { ?>
-			<li><a href="scoutbook.php?rt=troop/newactivity">Napravi novu aktivnost</a></li>
-			<li><a href="scoutbook.php?rt=troop/newmember">Dodaj novog izviđača</a></li>
+			<li><a class="nav" id="novaAktivnost" href="scoutbook.php?rt=troop/newactivity">Napravi novu aktivnost</a></li>
+			<li><a class="nav" id="noviIzvidac" href="scoutbook.php?rt=troop/newmember">Dodaj novog izviđača</a></li>
 			<?php } ?>
 		</ul>
 	</nav>

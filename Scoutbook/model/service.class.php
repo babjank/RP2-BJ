@@ -210,7 +210,7 @@ class Service
 		return $errorMsg;
 	}
 	
-	function getLeadersTroop($id)
+	function getLeadersPatrol($id)
 	{
 		try
 		{
@@ -273,6 +273,25 @@ class Service
 			}
 		
 		return [$errorMsg, $activityId];
+	}
+	
+	function getUsersByPatrol($ime_patrole)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT * FROM IZVIDAC WHERE IME_PATROLE=:ime_patrole");
+			$st->execute(array("ime_patrole" => $ime_patrole));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+
+		$arr = array();
+		while($row = $st->fetch())
+			$arr[] = new User($row["OIB"], $row["IME"], $row["PREZIME"], $row["ADRESA"], $row["DATUM_UPISA"],
+			$row["IME_PATROLE"], $row["EMAIL"], $row["USERNAME"], $row["PASSWORD_HASH"], $row["ULOGIRAN"],
+			$row["SLIKA"]);
+
+		return $arr;
 	}
 };
 

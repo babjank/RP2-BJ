@@ -12,7 +12,7 @@ class ProfilController
 		if (!$_SESSION["voda"])
 			$patrola = $tus->getTroopById($izvidac->ime_patrole)->ime_patrole;
 		else
-			$patrola = $tus->getLeadersTroop($_SESSION["id"]);
+			$patrola = $tus->getLeadersPatrol($_SESSION["id"]);
 		$aktivnostList = $tus->getAcitivtiesByMemberId($_SESSION["id"]);
 		
 		require_once "view/profil_index.php";

@@ -84,7 +84,7 @@ class TroopController
 		&& isset($_POST["email"]) && (strcmp($_POST["oib"], "") !== 0) && (strcmp($_POST["ime"], "") !== 0) 
 		&& (strcmp($_POST["prezime"], "") !== 0) && (strcmp($_POST["adresa"], "") !== 0) 
 		&& (strcmp($_POST["email"], "") !== 0)) {
-			$patrola = $tus->getLeadersTroop($_SESSION["id"]);
+			$patrola = $tus->getLeadersPatrol($_SESSION["id"]);
 			$errorMsg = $tus->insertMember($_POST["oib"], $_POST["ime"], $_POST["prezime"], $_POST["adresa"], 
 										$_POST["email"], $patrola);
 		}
@@ -101,6 +101,18 @@ class TroopController
 		$voda = $tus->getUserById($aktivnost->id_izvidac)->username;
 		
 		require_once "view/singleactivity_index.php";
+	}
+	
+	public function patrol()
+	{
+		$tus = new Service();
+		
+		if (!$_SESSION["voda"])
+			$patrola = $tus->getUserById($_SESSION["id"])->ime_patrole;
+		else
+			$patrola = $tus->getLeadersPatrol($_SESSION["id"]);
+		$izvidaci = $tus->getUsersByPatrol($patrola);
+		require_once "view/patrol_index.php";
 	}
 };
 
