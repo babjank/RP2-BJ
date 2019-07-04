@@ -13,7 +13,7 @@ class DB
 	    {
 	    	try
 	    	{
-					DB::$db = new PDO( 'mysql:host=rp2.studenti.math.hr; dbname=basic; charset=utf8', 'student','pass.mysql' );
+					DB::$db = new PDO( 'mysql:host=localhost; dbname=jelena; charset=utf8', 'root','bnerawkif2502' );
 					DB::$db-> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		    }
 		    catch( PDOException $e ) { exit( 'PDO Error: ' . $e->getMessage() ); }

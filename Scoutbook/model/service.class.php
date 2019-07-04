@@ -22,7 +22,9 @@ class Service
 		if($row === false)
 			return null;
 		else
-			return new User($row["OIB"], $row["USERNAME"], $row["PASSWORD_HASH"], $row["EMAIL"], $row["ULOGIRAN"], $row["IME_PATROLE"]);
+			return new User($row["OIB"], $row["IME"], $row["PREZIME"], $row["ADRESA"],
+							$row["DATUM_UPISA"], $row["IME_PATROLE"], $row["EMAIL"], $row["USERNAME"], 
+							$row["PASSWORD_HASH"], $row["ULOGIRAN"], $row["SLIKA"]);
 	}
 
 	function getUserById($id)
@@ -39,7 +41,9 @@ class Service
 		if($row === false)
 			return null;
 		else
-			return new User($row["OIB"], $row["USERNAME"], $row["PASSWORD_HASH"], $row["EMAIL"], $row["ULOGIRAN"], $row["IME_PATROLE"]);
+			return new User($row["OIB"], $row["IME"], $row["PREZIME"], $row["ADRESA"],
+							$row["DATUM_UPISA"], $row["IME_PATROLE"], $row["EMAIL"], $row["USERNAME"], 
+							$row["PASSWORD_HASH"], $row["ULOGIRAN"], $row["slika"]);
 	}
 
 
@@ -122,7 +126,7 @@ class Service
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare("SELECT * FROM SUDJELUJE_NA WHERE ID_IZVIDAC=:id_user");
+			$st = $db->prepare("SELECT * FROM SUDJELUJE_NA WHERE OIB=:id_user");
 			$st->execute(array("id_user" => $id_user));
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
@@ -154,7 +158,20 @@ class Service
 
 		return $arr;
 	}
-
+	
+	
+	function changeUserInfo($old_username, $username, $password, $slika)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("UPDATE IZVIDAC SET USERNAME=:username, PASSWORD_HASH=:password, ULOGIRAN=:ulogiran,
+			 					SLIKA=:slika WHERE USERNAME=:old_username");
+			$st->execute(array("old_username" => $old_username, "username" => $username, 
+							"password" => $password, "ulogiran" => 1, "slika" => $slika));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+	}
 };
 
 ?>

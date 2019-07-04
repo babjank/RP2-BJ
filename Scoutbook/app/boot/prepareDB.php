@@ -45,7 +45,6 @@ if( $has_tables )
 	exit( 'Tablice već postoje. Obrišite ih pa probajte ponovno.' );
 }
 
-
 try
 {
 	$st = $db->prepare(
@@ -75,7 +74,8 @@ try
 		'EMAIL VARCHAR(50) NOT NULL,' .
 		'USERNAME varchar(50) NOT NULL,' .
 		'PASSWORD_HASH VARCHAR(255) NOT NULL,' .
-		'ULOGIRAN int)'
+		'ULOGIRAN int,' .
+		'SLIKA VARCHAR(80))'
 	);
 
 	$st->execute();
@@ -119,7 +119,7 @@ try
 	$st = $db->prepare(
 		'CREATE TABLE IF NOT EXISTS AKTIVNOST (' .
 		'ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,' .
-		'ID_IZVIDAC NUMERIC(11) UNSIGNED NOT NULL,' .
+		'OIB NUMERIC(11) UNSIGNED NOT NULL,' .
 		'DATUM_ODRZAVANJA DATE NOT NULL,' .
 		'MJESTO VARCHAR(15),' .
 		'CIJENA FLOAT UNSIGNED,' .
@@ -139,7 +139,7 @@ try
 		'CREATE TABLE IF NOT EXISTS SUDJELUJE_NA (' .
 		'ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,' .
 		'ID_AKTIVNOST INT NOT NULL,' .
-		'ID_IZVIDAC INT NOT NULL,' .
+		'OIB NUMERIC(11) UNSIGNED NOT NULL,' .
 		'ULOGA VARCHAR(15) NOT NULL)'
 	);
 
@@ -227,10 +227,10 @@ echo "Ubacio u tablicu RADIONICA.<br />";
 
 try
 {
-	$st = $db->prepare( 'INSERT INTO AKTIVNOST(ID_IZVIDAC, DATUM_ODRZAVANJA, MJESTO, CIJENA, BROJ_CLANOVA) VALUES (:id, :datum, :mjesto, :cijena, :broj)');
+	$st = $db->prepare( 'INSERT INTO AKTIVNOST(OIB, DATUM_ODRZAVANJA, MJESTO, CIJENA, BROJ_CLANOVA) VALUES (:oib, :datum, :mjesto, :cijena, :broj)');
 
-	$st->execute( array( 'id' => 11912355361 , 'datum' => "2019-06-27", 'mjesto' => 'PD Hunjka', 'cijena' => 10, 'broj' => 4) );
-	$st->execute( array( 'id' => 52421322457 , 'datum' => "2019-06-15", 'mjesto' => 'Jarun', 'cijena' => 15, 'broj' => 1) );
+	$st->execute( array( 'oib' => 11912355361 , 'datum' => "2019-06-27", 'mjesto' => 'PD Hunjka', 'cijena' => 10, 'broj' => 4) );
+	$st->execute( array( 'oib' => 52421322457 , 'datum' => "2019-06-15", 'mjesto' => 'Jarun', 'cijena' => 15, 'broj' => 1) );
 }
 catch( PDOException $e ) { exit( "PDO error [insert AKTIVNOST]: " . $e->getMessage() ); }
 
@@ -238,13 +238,13 @@ echo "Ubacio u tablicu AKTIVNOST.<br />";
 
 try
 {
-	$st = $db->prepare( 'INSERT INTO SUDJELUJE_NA(ID_AKTIVNOST, ID_IZVIDAC, ULOGA) VALUES (:id_aktivnost, :id_izvidac, :uloga)' );
+	$st = $db->prepare( 'INSERT INTO SUDJELUJE_NA(ID_AKTIVNOST, OIB, ULOGA) VALUES (:id_aktivnost, :oib, :uloga)' );
 
-	$st->execute( array( 'id_aktivnost' => 1, 'id_izvidac' => 11912355361, 'uloga' => 'voda izleta' ) );
-	$st->execute( array( 'id_aktivnost' => 1, 'id_izvidac' => 64226562901, 'uloga' => 'sudionik' ) );
-	$st->execute( array( 'id_aktivnost' => 1, 'id_izvidac' => 19474757537, 'uloga' => 'sudionik' ) );
-	$st->execute( array( 'id_aktivnost' => 1, 'id_izvidac' => 92568529652, 'uloga' => 'sudionik' ) );
-	$st->execute( array( 'id_aktivnost' => 2, 'id_izvidac' => 52421322457, 'uloga' => 'voda izleta' ) );
+	$st->execute( array( 'id_aktivnost' => 1, 'oib' => 11912355361, 'uloga' => 'voda izleta' ) );
+	$st->execute( array( 'id_aktivnost' => 1, 'oib' => 64226562901, 'uloga' => 'sudionik' ) );
+	$st->execute( array( 'id_aktivnost' => 1, 'oib' => 19474757537, 'uloga' => 'sudionik' ) );
+	$st->execute( array( 'id_aktivnost' => 1, 'oib' => 92568529652, 'uloga' => 'sudionik' ) );
+	$st->execute( array( 'id_aktivnost' => 2, 'oib' => 52421322457, 'uloga' => 'voda izleta' ) );
 
 }
 catch( PDOException $e ) { exit( "PDO error [insert SUDJELUJE_NA]: " . $e->getMessage() ); }

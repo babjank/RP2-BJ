@@ -5,6 +5,7 @@
 	<title>Be prepared!</title>
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Fresca|Noto+Sans+HK&display=swap" rel="stylesheet">
+	
 </head>
 <body>
 	<div id="username_logout">
@@ -14,7 +15,7 @@
 	</div>
 	<nav>
 		<ul>
-			<li><a href="scoutbook.php?rt=troop/profile">Profil</a></li>
+			<li><a href="scoutbook.php?rt=profil">Moj profil</a></li>
 			<li><a href="scoutbook.php?rt=troop">Odred</a></li>
 			<li><a href="scoutbook.php?rt=troop/patrol">Patrola</a></li>
 			<li><a href="scoutbook.php?rt=troop/activities">Aktivnosti</a></li>

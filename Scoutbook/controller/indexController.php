@@ -1,14 +1,27 @@
 <?php
 
+require_once "model/service.class.php";
+
 class IndexController
 {
 	public function index()
 	{
 		// Samo preusmjeri na login podstranicu.
-		if (!isset($_SESSION["username"]))
+		$tus = new Service();
+		
+		$izvidac = $tus->getUserByUsername($_SESSION["username"]);
+		if (!isset($_SESSION["username"])) {
 			header("Location: scoutbook.php?rt=login");
-		else
-			header("Location: scoutbook.php?rt=troop");
+			exit();
+		} else {
+			if (strcmp($izvidac->ulogiran, "1") === 0) {
+				header("Location: scoutbook.php?rt=troop");
+				exit();
+			} else {
+				header("Location: scoutbook.php?rt=login/prvilogin");
+				exit();
+			}
+		}
 	}
 };
 
