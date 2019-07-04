@@ -188,6 +188,42 @@ class Service
 			return false;
 		return true;
 	}
+	
+	function insertMember($oib, $ime, $prezime, $adresa, $email, $ime_patrole)
+	{
+		$errorMsg = "OK";
+		
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("INSERT INTO IZVIDAC(oib, ime, prezime, adresa, datum_upisa, 
+			ime_patrole, email, username, password_hash, ulogiran)
+			VALUES (:oib, :ime, :prezime, :adresa, :datum_upisa, :ime_patrole,
+			:email, :username, :password_hash, :ulogiran)");
+			$st->execute(array("oib" => $oib, "ime" => $ime, "prezime" => $prezime, "adresa" => $adresa,
+			"datum_upisa" => date("Y-m-d"), "ime_patrole" => $ime_patrole, "email" => $email, 
+			"username" => $oib, "password_hash" => password_hash(strtolower($ime_patrole), PASSWORD_DEFAULT),
+			"ulogiran" => 0));
+		}
+		catch(PDOException $e) { $errorMsg = $e->getMessage(); }
+		
+		return $errorMsg;
+	}
+	
+	function getLeadersTroop($id)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT * FROM VODA WHERE OIB=:id");
+			$st->execute(array("id" => $id));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+
+		$row = $st->fetch();
+
+		return $row["IME_PATROLE"];
+	}
 };
 
 ?>

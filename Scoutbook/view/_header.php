@@ -22,7 +22,7 @@
 			<li><a href="scoutbook.php?rt=troop/myactivities">Moje Aktivnosti</a></li>
 			<?php if ($_SESSION["voda"]) { ?>
 			<li><a href="scoutbook.php?rt=troop/newactivity">Napravi novu aktivnost</a></li>
-			<li><a href="scoutbook.php?rt=troop/newactivity">Dodaj novog izviđača</a></li>
+			<li><a href="scoutbook.php?rt=troop/newmember">Dodaj novog izviđača</a></li>
 			<?php } ?>
 		</ul>
 	</nav>

@@ -68,6 +68,29 @@ class TroopController
 
 		require_once "view/activity_newinput.php";
 	}
+	
+	public function newmember()
+	{
+		require_once "view/addnewmember.php";
+	}
+	
+	public function newmemberinput()
+	{
+		$tus = new Service();
+		
+		$errorMsg = "NOT_SET";
+		
+		if (isset($_POST["oib"]) && isset($_POST["ime"]) && isset($_POST["prezime"]) && isset($_POST["adresa"]) 
+		&& isset($_POST["email"]) && (strcmp($_POST["oib"], "") !== 0) && (strcmp($_POST["ime"], "") !== 0) 
+		&& (strcmp($_POST["prezime"], "") !== 0) && (strcmp($_POST["adresa"], "") !== 0) 
+		&& (strcmp($_POST["email"], "") !== 0)) {
+			$patrola = $tus->getLeadersTroop($_SESSION["id"]);
+			$errorMsg = $tus->insertMember($_POST["oib"], $_POST["ime"], $_POST["prezime"], $_POST["adresa"], 
+										$_POST["email"], $patrola);
+		}
+		
+		require_once "view/addnewmember.php";
+	}
 };
 
 ?>
