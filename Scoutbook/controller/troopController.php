@@ -61,7 +61,7 @@ class TroopController
 
 		if (isset($_POST["mjesto"]) && isset($_POST["datum"]) && isset($_POST["cijena"]) &&
 		(strcmp($_POST["mjesto"], "") !== 0) && (strcmp($_POST["datum"], "") !== 0)) {
-			$retVal = $tus->insertActivity($_SESSION["id"], $_POST["mjesto"], $_POST["datum"], $_POST["cijena"]);
+			$retVal = $tus->insertActivity($_SESSION["id"], $_POST["mjesto"], $_POST["datum"], $_POST["cijena"], $_POST["abstract"]);
 			$errorMsg = $retVal[0];
 			$id_aktivnost = $retVal[1];
 		}
@@ -90,6 +90,17 @@ class TroopController
 		}
 		
 		require_once "view/addnewmember.php";
+	}
+	
+	public function showmine()
+	{
+		$tus = new Service();
+		
+		$activityId = $_GET["id_aktivnost"];
+		$aktivnost = $tus->getActivityById($activityId);
+		$voda = $tus->getUserById($aktivnost->id_izvidac)->username;
+		
+		require_once "view/singleactivity_index.php";
 	}
 };
 

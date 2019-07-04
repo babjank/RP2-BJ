@@ -98,7 +98,7 @@ class Service
 		if($row === false)
 			return null;
 		else
-			return new Activity($row["ID"], $row["ID_IZVIDAC"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["CIJENA"], $row["BROJ_CLANOVA"]);
+			return new Activity($row["ID"], $row["OIB"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["OPIS"], $row["CIJENA"], $row["BROJ_CLANOVA"]);
 	}
 
 
@@ -115,7 +115,7 @@ class Service
 		$arr = array();
 		while($row = $st->fetch())
 		{
-			$arr[] = new Activity($row["ID"], $row["ID_IZVIDAC"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["CIJENA"], $row["BROJ_CLANOVA"]);
+			$arr[] = new Activity($row["ID"], $row["ID_IZVIDAC"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["opis"], $row["CIJENA"], $row["BROJ_CLANOVA"]);
 		}
 
 		return $arr;
@@ -136,7 +136,7 @@ class Service
 		{
 			$activity = $this->getActivityById($row["ID_AKTIVNOST"]);
 			$arr[] = new Activity($activity->id, $sctivity->id_izvidac, $activity->datum, $activity->mjesto,
-			$activity->cijena, $activity->broj_clanova);
+			$activity->opis, $activity->cijena, $activity->broj_clanova);
 		}
 
 		return $arr;
@@ -223,6 +223,56 @@ class Service
 		$row = $st->fetch();
 
 		return $row["IME_PATROLE"];
+	}
+	
+	function getMaxId()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT id FROM AKTIVNOST");
+			$st->execute();
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+
+		$arr = array();
+		$max = -1;
+		while($row = $st->fetch())
+		{
+			if ((int)$row["id"] > $max)
+				$max  = (int)$row["id"];
+		}
+
+		return $max;
+	}
+	
+	function insertActivity($id, $mjesto, $datum, $cijena, $opis)
+	{
+		$activityId = $this->getMaxId() + 1;
+		$errorMsg = "OK";
+
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("INSERT INTO AKTIVNOST(oib, mjesto, datum_odrzavanja, opis, cijena, broj_clanova)
+			 VALUES (:oib, :mjesto, :datum, :opis, :cijena, :broj_clanova)");
+			$st->execute(array("oib" => $id, "mjesto" => $mjesto, "datum" => $datum, 
+			"opis" => $opis, "cijena" => $cijena, "broj_clanova" => 1));
+		}
+		catch(PDOException $e) { $errorMsg = $e->getMessage(); }
+		
+		if (strcmp($errorMsg, "OK") === 0) {
+			try
+			{
+				$db = DB::getConnection();
+				$st = $db->prepare("INSERT INTO SUDJELUJE_NA(id_aktivnost, oib, uloga)
+				 VALUES (:id_aktivnost, :oib, :uloga)");
+				$st->execute(array("id_aktivnost" => $activityId, "oib" => $id, "uloga" => "voda izleta"));
+			}
+			catch(PDOException $e) { $errorMsg = $e->getMessage(); }
+			}
+		
+		return [$errorMsg, $activityId];
 	}
 };
 
