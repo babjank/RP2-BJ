@@ -6,6 +6,11 @@
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Fresca|Noto+Sans+HK&display=swap" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+	<?php if (isset($prva) && $prva) {
+		$prva = false;
+		echo "<script src='scripts/headerfirst.js'></script>";
+	} else
+		echo "<script src='scripts/header.js'></script>"; ?>
 </head>
 <body>
 	<div id="username_logout">
