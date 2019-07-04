@@ -172,6 +172,22 @@ class Service
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
 	}
+	
+	function checkIfLeaderByID($id)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT * FROM VODA WHERE OIB=:oib");
+			$st->execute(array("oib" => $id));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+		
+		$row = $st->fetch();
+		if ($row === false)
+			return false;
+		return true;
+	}
 };
 
 ?>

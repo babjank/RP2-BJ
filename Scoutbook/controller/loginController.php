@@ -26,6 +26,7 @@ class LoginController
 			else if (password_verify($_POST["password"], $user->password_hash)) {
 				$_SESSION["username"] = $user->username;
 				$_SESSION["id"] = $user->id;
+				$_SESSION["voda"] = $tus->checkIfLeaderById($_SESSION["id"]);
 				if ($user->ulogiran === "0")
 					header("Location: scoutbook.php?rt=login/prvilogin");
 				else
