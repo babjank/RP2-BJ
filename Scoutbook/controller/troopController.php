@@ -8,8 +8,7 @@ class TroopController
 	{
 		$tus = new Service();
 		
-		if (isset($_GET["prvi"]) && strcmp($_GET["prvi"], "true") === 0)
-			$prvi = true;
+		echo "<script>sessionStorage.setItem('aktivan', 'odred')</script>";
 
 		$patrolaList = $tus->getAllTroops($false);
 		$izvidac = $tus->getUserByUsername($_SESSION["username"]);
