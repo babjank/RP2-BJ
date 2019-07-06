@@ -13,8 +13,8 @@ class ProfilController
 		if (!$voda)
 			$patrola = $izvidac->ime_patrole;
 		else
-			$patrola = $tus->getLeadersPatrol($tus->getUserByUsername($_GET["username"])->oib);
-		$aktivnostList = $tus->getAcitivtiesByMemberId($tus->getUserByUsername($_GET["username"])->oib);
+			$patrola = $tus->getLeadersPatrol($tus->getUserByUsername($_GET["username"])->id);
+		$aktivnostList = $tus->getAcitivtiesByMemberId($tus->getUserByUsername($_GET["username"])->id);
 		
 		require_once "view/profil_index.php";
 	}
