@@ -7,8 +7,6 @@ class TroopController
 	public function index()
 	{
 		$tus = new Service();
-		
-		echo "<script>sessionStorage.setItem('aktivan', 'odred')</script>";
 
 		$patrolaList = $tus->getAllTroops($false);
 		$izvidac = $tus->getUserByUsername($_SESSION["username"]);
@@ -115,6 +113,28 @@ class TroopController
 			$patrola = $tus->getLeadersPatrol($_SESSION["id"]);
 		$izvidaci = $tus->getUsersByPatrol($patrola);
 		require_once "view/patrol_index.php";
+	}
+	
+	public function news()
+	{
+		echo "<script>sessionStorage.setItem('aktivan', 'obavijesti')</script>";
+	
+		$voda = $_SESSION["voda"];
+				
+		require_once "view/news_index.php";
+	}
+	
+	public function newNotification()
+	{
+		$sadrzaj = $_POST["objava"];
+		$naslov = $_POST["naslov"];
+		$datum = date("Y-m-d");
+		
+		$tus = new Service();
+		$tus->insertNews($sadrzaj, $naslov, $datum, $_SESSION["id"]);
+		
+		header("Location: scoutbook.php?rt=troop/news");
+		exit();
 	}
 };
 

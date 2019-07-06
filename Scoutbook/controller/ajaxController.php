@@ -86,5 +86,16 @@ class ajaxController
 		}
 		sendJSONandExit($log);
 	}
+	
+	function news()
+	{
+		$tus = new Service();
+		
+		$objave = $tus->getNews();
+		
+		$message = [];
+		$message["objave"] = $objave;
+		sendJSONandExit($message);
+	}
 }
 ?>

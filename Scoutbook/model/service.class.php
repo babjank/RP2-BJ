@@ -330,6 +330,37 @@ class Service
 
 		return $row["USERNAME"];
 	}
+	
+	function getNews()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT * FROM OBAVIJESTI");
+			$st->execute();
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+
+		$arr = array();
+		while($row = $st->fetch())
+			$arr[] = ["id" => $row["ID"], "sadrzaj" => $row["SADRZAJ"], "naslov" => $row["NASLOV"],
+						"datum" => $row["DATUM"], "autor" => $this->getUserById($row["OIB"])->username];
+
+		return $arr;
+	}
+	
+	function insertNews($sadrzaj, $naslov, $datum, $autor)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("INSERT INTO OBAVIJESTI(sadrzaj, naslov, datum, oib)
+			 VALUES (:sadrzaj, :naslov, :datum, :oib)");
+			$st->execute(array("sadrzaj" => $sadrzaj, "naslov" => $naslov, "datum" => $datum, 
+			"oib" => $autor));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+	}
 };
 
 ?>

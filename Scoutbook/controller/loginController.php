@@ -30,7 +30,7 @@ class LoginController
 				if ($user->ulogiran === "0")
 					header("Location: scoutbook.php?rt=login/prvilogin");
 				else
-					header("Location: scoutbook.php?rt=troop");
+					header("Location: scoutbook.php?rt=troop/news");
 				exit();
 			}
 			else if (!password_verify($_POST["password"], $user->password_hash))
@@ -104,7 +104,7 @@ class LoginController
 				password_hash($_POST["password"], PASSWORD_DEFAULT), $_FILES["fileToUpload"]["name"]);
 			$_SESSION["username"] = $_POST["username"];
 			
-			header("Location: scoutbook.php?rt=troop");
+			header("Location: scoutbook.php?rt=troop/news");
 			exit();
     	}
 	}

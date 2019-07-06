@@ -3,3 +3,5 @@
 <span>Antilopa: </span>Kako si? 
 <span>Vjeverica10: </span>ok 
 <span>Vjeverica10: </span>ti? 
+<span>Antilopa: </span>super 
+<span>Vjeverica10: </span>a ba&scaron; lijepo 

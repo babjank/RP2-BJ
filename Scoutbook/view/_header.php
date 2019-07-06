@@ -18,6 +18,7 @@
 	</div>
 	<nav>
 		<ul id="nav">
+			<li><a class="nav" id="obavijesti" href="scoutbook.php?rt=troop/news">Obavijesti</a></li>
 			<li><a class="nav" id="profil" href="scoutbook.php?rt=profil&username=
 			<?php echo $_SESSION['username'];?>">Moj profil</a></li>
 			<li><a class="nav" id="odred" href="scoutbook.php?rt=troop">Odred</a></li>

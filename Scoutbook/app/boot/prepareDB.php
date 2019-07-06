@@ -36,6 +36,10 @@ try
 	$st->execute( array( 'tblname' => 'SUDJELUJE_NA' ) );
 	if( $st->rowCount() > 0 )
 		$has_tables = true;
+		
+	$st->execute( array( 'tblname' => 'OBAVIJESTI' ) );
+	if( $st->rowCount() > 0 )
+		$has_tables = true;
 }
 catch( PDOException $e ) { exit( "PDO error [show tables]: " . $e->getMessage() ); }
 
@@ -142,6 +146,24 @@ try
 		'ID_AKTIVNOST INT NOT NULL,' .
 		'OIB NUMERIC(11) UNSIGNED NOT NULL,' .
 		'ULOGA VARCHAR(15) NOT NULL)'
+	);
+
+	$st->execute();
+}
+catch( PDOException $e ) { exit( "PDO error [create SUDJELUJE_NA]: " . $e->getMessage() ); }
+
+echo "Napravio tablicu SUDJELUJE_NA.<br />";
+
+try
+{
+	$st = $db->prepare(
+		'CREATE TABLE IF NOT EXISTS OBAVIJESTI (' .
+		'ID NUMERIC(5) UNSIGNED NOT NULL,' .
+		'SADRZAJ VARCHAR(500),' .
+		'NASLOV VARCHAR(50),' .
+		'DATUM DATE,' .
+		'OIB NUMBERIC(11) UNSIGNED,' .
+		'PRIMARY KEY(ID))'
 	);
 
 	$st->execute();
