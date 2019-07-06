@@ -15,8 +15,7 @@ class IndexController
 			exit();
 		} else {
 			if (strcmp($izvidac->ulogiran, "1") === 0) {
-				$prvi = true;
-				header("Location: scoutbook.php?rt=troop");
+				header("Location: scoutbook.php?rt=troop&prvi=true");
 				exit();
 			} else {
 				header("Location: scoutbook.php?rt=login/prvilogin");
