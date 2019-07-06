@@ -8,12 +8,13 @@ class ProfilController
 	{
 		$tus = new Service();
 		
-		$izvidac = $tus->getUserByUsername($_SESSION["username"]);
-		if (!$_SESSION["voda"])
+		$izvidac = $tus->getUserByUsername($_GET["username"]);
+		$voda = $tus->checkIfLeaderByUsername($_GET["username"]);
+		if (!$voda)
 			$patrola = $izvidac->ime_patrole;
 		else
-			$patrola = $tus->getLeadersPatrol($_SESSION["id"]);
-		$aktivnostList = $tus->getAcitivtiesByMemberId($_SESSION["id"]);
+			$patrola = $tus->getLeadersPatrol($tus->getUserByUsername($_GET["username"])->oib);
+		$aktivnostList = $tus->getAcitivtiesByMemberId($tus->getUserByUsername($_GET["username"])->oib);
 		
 		require_once "view/profil_index.php";
 	}

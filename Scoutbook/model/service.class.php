@@ -193,6 +193,23 @@ class Service
 		return true;
 	}
 	
+	function checkIfLeaderByUsername($username)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT * FROM VODA,IZVIDAC WHERE VODA.OIB=IZVIDAC.OIB 
+								AND USERNAME=:username");
+			$st->execute(array("username" => $username));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+		
+		$row = $st->fetch();
+		if ($row === false)
+			return false;
+		return true;
+	}
+	
 	function insertMember($oib, $ime, $prezime, $adresa, $email, $ime_patrole)
 	{
 		$errorMsg = "OK";
