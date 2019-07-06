@@ -65,7 +65,7 @@ class Service
 	}
 
 
-	function getAllTroops()
+	function getAllTroops($js)
 	{
 		try
 		{
@@ -78,7 +78,11 @@ class Service
 		$arr = array();
 		while($row = $st->fetch())
 		{
-			$arr[] = new Troop($row["IME_PATROLE"], $row["RAZRED"], $row["STUPANJ_ZNANJA"], $row["ID_RADIONICA"]);
+			if (!$js)
+				$arr[] = new Troop($row["IME_PATROLE"], $row["RAZRED"], $row["STUPANJ_ZNANJA"], $row["ID_RADIONICA"]);
+			else
+				$arr[] = ["ime_patrole" => $row["IME_PATROLE"], "razred" => $row["RAZRED"],
+				"stupanj_znanja" => $row["STUPANJ_ZNANJA"], "id_radionice" => $row["ID_RADIONICA"]];
 		}
 
 		return $arr;
@@ -292,6 +296,22 @@ class Service
 			$row["SLIKA"]);
 
 		return $arr;
+	}
+	
+	function getPatrolsLeader($ime_patrole)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT USERNAME FROM VODA, IZVIDAC WHERE VODA.OIB=IZVIDAC.OIB AND
+								VODA.IME_PATROLE=:ime_patrole");
+			$st->execute(array("ime_patrole" => $ime_patrole));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+
+		$row = $st->fetch();
+
+		return $row["USERNAME"];
 	}
 };
 

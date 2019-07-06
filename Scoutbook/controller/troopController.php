@@ -8,7 +8,7 @@ class TroopController
 	{
 		$tus = new Service();
 
-		$patrolaList = $tus->getAllTroops();
+		$patrolaList = $tus->getAllTroops($false);
 		$izvidac = $tus->getUserByUsername($_SESSION["username"]);
 		$byUser = false;
 		require_once "view/troop_index.php";

@@ -10,7 +10,7 @@ class ProfilController
 		
 		$izvidac = $tus->getUserByUsername($_SESSION["username"]);
 		if (!$_SESSION["voda"])
-			$patrola = $tus->getTroopById($izvidac->ime_patrole)->ime_patrole;
+			$patrola = $izvidac->ime_patrole;
 		else
 			$patrola = $tus->getLeadersPatrol($_SESSION["id"]);
 		$aktivnostList = $tus->getAcitivtiesByMemberId($_SESSION["id"]);
