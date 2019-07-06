@@ -48,7 +48,7 @@ $(document).ready(function()
 			}
 			
 			for (var i = 0 ; i < patrole.length ; ++i) {
-				var div = $("<div id='dialog" + i + "'>");
+				var div = $("<div style='display:none;' id='dialog" + i + "'>");
 				div.append(patrole[i].ime_patrole + "<br>Vođa: " + vode[i].charAt(0).toUpperCase()
 				+ vode[i].slice(1) + "<br>Razred: " + patrole[i].razred + ".<br>Stupanj znanja: ");
 				var stupanj;
