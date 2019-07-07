@@ -157,7 +157,7 @@ echo "Napravio tablicu SUDJELUJE_NA.<br />";
 try
 {
 	$st = $db->prepare(
-		'CREATE TABLE IF NOT EXISTS OBAVIJEST (' .
+		'CREATE TABLE IF NOT EXISTS OBAVIJESTI (' .
 		'ID NUMERIC(5) UNSIGNED NOT NULL,' .
 		'SADRZAJ VARCHAR(500),' .
 		'NASLOV VARCHAR(50),' .
@@ -168,9 +168,9 @@ try
 
 	$st->execute();
 }
-catch( PDOException $e ) { exit( "PDO error [create OBAVIJEST]: " . $e->getMessage() ); }
+catch( PDOException $e ) { exit( "PDO error [create OBAVIJESTI]: " . $e->getMessage() ); }
 
-echo "Napravio tablicu OBAVIJEST.<br />";
+echo "Napravio tablicu OBAVIJESTI.<br />";
 
 try
 {
