@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-	var komPrikazani = false;
+	var komPrikazani = false, dodajKom = false;
 	$.ajax(
 	{
 		url: "scoutbook.php?rt=ajax/news",
@@ -23,6 +23,7 @@ $(document).ready(function()
 				div.append("<span class='specChar'> &bull; </span><span class='dodajKomentare' id='dodajKom" 
 							+ objave[i].id + "'>Dodaj komentar!</span>");
 				div.append("<div id='prikazani" + objave[i].id + "'>");
+				div.append("<div id='dodavanjeKom" + objave[i].id + "'>");
 				$("#newsArea").append(div);
 			}
 			
@@ -77,13 +78,19 @@ $(document).ready(function()
 	$("body").on("click", ".dodajKomentare", function(event)
 	{
 		var id = $(this).prop("id").substring(8);
-		var div = $("<div id='formaKomentari" + id + "'>");
-		var form = $("<form method='post' action='scoutbook.php?rt=troop/objaviKomentar&id_obavijest=" 
+		$("#dodavanjeKom" + id).html("");
+		if (!dodajKom) {
+			var div = $("<div id='formaKomentari" + id + "'>");
+			var form = $("<form method='post' action='scoutbook.php?rt=troop/objaviKomentar&id_obavijest=" 
 					+ id + "'></form>");
-		form.append("<textarea name='komArea" + id + "' rows='3' cols='30'></textarea>");
-		form.append("<br><button class='objaviKom' id='btn" + id + "'>Objavi!</button>");
-		div.append(form);
-		$("#objava" + id).append(div);
+			form.append("<textarea name='komArea" + id + "' rows='3' cols='30'></textarea>");
+			form.append("<br><button class='objaviKom' id='btn" + id + "'>Objavi!</button>");
+			div.append(form);
+			$("#dodavanjeKom" + id).append(div);
+			dodajKom = true;
+		} else {
+			dodajKom = false;
+		}
 	});
 	
 	/*$("body").on("click", ".objaviKom", function(event)
