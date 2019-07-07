@@ -53,15 +53,17 @@ function napravi( data, month, ix ){
   var id_aktivnosti = new Array();
   var datumi = data.datumi;
   var id = data.id;
-  for( var i = 0; i <= datumi.length; i++)
+  var len = datumi.length;
+  var j = 0;
+  for( var i = 0; i < len; i++)
   {
     var str = datumi.pop(), m = id.pop();
     if(str.split('-')[1] == (month+1)){
-      dan_aktivnosti[i] = str.split('-')[2];
-      id_aktivnosti[i] = m;
+      dan_aktivnosti[j] = str.split('-')[2];
+      id_aktivnosti[j] = m;
+      j++;
     }
   }
-
 
   var calendar = get_calendar(day_name, day_no, days, dan_aktivnosti, id_aktivnosti);
   $("#calendar-month-year-"+ix).html(month_name[month]+" "+year);
