@@ -6,6 +6,6 @@ if (strcmp($errorMsg, "OK") === 0)
 else
 	echo "Akcija prijave nije uspjela. Greška: <br>" . $errorMsg . "<br>";
 
-echo "<a href='scoutbook.php?rt=troop/showmine'>Pogledaj na što svi sve prijavljen!</a>";
+echo "<a href='scoutbook.php?rt=troop/myactivities'>Pogledaj na što svi sve prijavljen!</a>";
 
 require_once "view/_footer.php"; ?>
