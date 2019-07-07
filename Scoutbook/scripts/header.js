@@ -13,9 +13,9 @@ $(document).ready(function()
 		var elements = $(".nav");
 		for (var i = 0 ; i < elements.length ; ++i) {
 			if (sessionStorage.getItem("aktivan") === elements.eq(i).prop("id"))
-				elements.eq(i).css("text-decoration", "underline");
+				elements.eq(i).parent().addClass("current");
 			else
-				elements.eq(i).css("text-decoration", "none");
+				elements.eq(i).parent().removeClass("current");
 		}
 	};
 });

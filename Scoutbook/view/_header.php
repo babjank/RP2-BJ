@@ -3,16 +3,17 @@
 <head>
 	<meta charset="utf8">
 	<title>Be prepared!</title>
-	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css?newversion">
 	<link href="https://fonts.googleapis.com/css?family=Fresca|Noto+Sans+HK&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
-	<script src='scripts/header.js?newversion'></script>
+	<script src='scripts/header.js'></script>
 	<div id="username_logout">
 		<h2 id="title">SCOUTBOOK</h2>
+		<img src="./data/scout.png" height="70px">
 		<h3 id="username"><?php echo ucfirst($_SESSION["username"]); ?></h3>
 		<a id="logout" href="scoutbook.php?rt=login/logout">Logout</a>
 	</div>

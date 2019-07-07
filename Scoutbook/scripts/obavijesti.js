@@ -1,5 +1,6 @@
 $(document).ready(function()
-{	
+{
+	var komPrikazani = false;
 	$.ajax(
 	{
 		url: "scoutbook.php?rt=ajax/news",
@@ -11,18 +12,17 @@ $(document).ready(function()
 			var objave = data.objave, i;
 
 			for (i = 0 ; i < objave.length ; ++i) {
-				var div = $("<div id='objava" + objave[i].id + "'>");
-				div.append("<h2>" + objave[i].naslov + "</h2>");
+				var div = $("<div class='objava' id='objava" + objave[i].id + "'>");
+				div.append("<h2 class='naslov'>" + objave[i].naslov + "</h2>");
 				div.append("<span class='autor'>Autor: " + objave[i].autor.charAt(0).toUpperCase() +
-				objave[i].autor.slice(1) + "</span><br>");
-				div.append("<span class='datum'>" + objave[i].datum + "</span><br>");
-				div.append(objave[i].sadrzaj);
-				
-				div.append("<br><span class='prikaziKomentare' id='prikaziKom" + objave[i].id + 
+				objave[i].autor.slice(1) + "</span>");
+				div.append("<span class='datum'>" + objave[i].datum + "</span>");
+				div.append("<div class='komSadrzajArea'>" + objave[i].sadrzaj + "</div>");
+				div.append("<span class='prikaziKomentare' id='prikaziKom" + objave[i].id + 
 							"'>Prikaži komentare!</span>");
-				div.append("<br><span class='dodajKomentare' id='dodajKom" + objave[i].id + 
-							"'>Dodaj komentar!</span>");
-				div.append("<hr>");
+				div.append("<span class='specChar'> &bull; </span><span class='dodajKomentare' id='dodajKom" 
+							+ objave[i].id + "'>Dodaj komentar!</span>");
+				div.append("<div id='prikazani" + objave[i].id + "'>");
 				$("#newsArea").append(div);
 			}
 			
@@ -44,28 +44,34 @@ $(document).ready(function()
 	
 	$("body").on("click", ".prikaziKomentare", function(event)
 	{
-		id = $(this).prop("id").substring(10)
-		$.ajax(
-		{
-			url: "scoutbook.php?rt=ajax/komentari",
-			data: {id_obavijest: $(this).prop("id").substring(10)},
-			type: "GET",
-			dataType: "json",
-			success: function(data)
+		id = $(this).prop("id").substring(10);
+		$("#prikazani" + id).html("");
+		if (!komPrikazani) {
+			$.ajax(
 			{
-				var komentari = data.komentari;
-				if (komentari.length > 0) {
-					var div = $("<div id='komentari" + id + "'>");
-					for (var i = 0 ; i < komentari.length ; ++i) {
-						div.append(komentari[i].autor.charAt(0).toUpperCase() +
+				url: "scoutbook.php?rt=ajax/komentari",
+				data: {id_obavijest: $(this).prop("id").substring(10)},
+				type: "GET",
+				dataType: "json",
+				success: function(data)
+				{
+					var komentari = data.komentari;
+					if (komentari.length > 0) {
+						var div = $("<div id='komentari" + id + "'>");
+						for (var i = 0 ; i < komentari.length ; ++i) {
+							div.append(komentari[i].autor.charAt(0).toUpperCase() +
 									komentari[i].autor.slice(1));
-						div.append("<br>" + komentari[i].datum);
-						div.append("<br>" + komentari[i].sadrzaj + "<br>");
-						$("#objava" + id).append(div);
-					} 
+							div.append("<br>" + komentari[i].datum);
+							div.append("<br>" + komentari[i].sadrzaj + "<br>");
+							$("#prikazani" + id).append(div);
+						} 
+					}
 				}
-			}
-		});
+			});
+			komPrikazani = true;
+		} else {
+			komPrikazani = false;
+		}
 	});
 	
 	$("body").on("click", ".dodajKomentare", function(event)

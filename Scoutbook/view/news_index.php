@@ -12,6 +12,6 @@
 </form>
 <?php } ?>
 
-<script src="./scripts/obavijesti.js?newversion"></script>
+<script src="./scripts/obavijesti.js?"></script>
 
 <?php require_once "view/_footer.php"; ?>
