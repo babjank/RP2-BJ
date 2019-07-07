@@ -1,10 +1,22 @@
 $(document).ready(function()
 {
-	var username2;
+	var username1, username2;
 	var instanse = false;
 	var state = 0;
 	var mes;
 	var file;
+
+	$.ajax(
+	{
+		url: "scoutbook.php?rt=ajax/username",
+		data: {},
+		type: "GET",
+		dataType: "json",
+		success: function(data)
+		{
+			username1 = data.username;
+		}
+	});
 
 	$(".posaljiPoruku").on("click", function(event)
 	{
@@ -75,6 +87,7 @@ $(document).ready(function()
 				success: function(data)
 				{
 					state = data.state;
+					localStorage.setItem(username1 + "_" + username2, state);
 					instanse = false;
 				}
 			});
@@ -102,6 +115,7 @@ $(document).ready(function()
 					document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
 					instanse = false;
 					state = data.state;
+					localStorage.setItem(username1 + "_" + username2, state);
 				}
 			});
 		} else {

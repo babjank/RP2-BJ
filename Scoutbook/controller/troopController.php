@@ -112,6 +112,7 @@ class TroopController
 		else
 			$patrola = $tus->getLeadersPatrol($_SESSION["id"]);
 		$izvidaci = $tus->getUsersByPatrol($patrola);
+		
 		require_once "view/patrol_index.php";
 	}
 	

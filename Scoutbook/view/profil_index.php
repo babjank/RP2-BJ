@@ -21,11 +21,30 @@
 			$stupanj = "bronze";
 		echo "<img src='data/" . $stupanj . ".png' height='50'><br>";
 	}
-	if (strcmp($izvidac->username, $_SESSION["username"]) !== 0)
-		echo "<span class='posaljiPoruku'>Pošalji poruku!</span>";
-	echo "</div>";
+	if (strcmp($izvidac->username, $_SESSION["username"]) !== 0) { ?>
+		<span class="posaljiPoruku">Pošalji poruku!</span><script>
+		$(document).ready(function()
+		{
+			var username1 = "<?php echo $_SESSION['username'];?>";
+			var username2 = "<?php echo $izvidac->username;?>";
+			$.ajax(
+			{
+				url: "scoutbook.php?rt=ajax/newMessage",
+				data: {username2: username2},
+				type: "GET",
+				dataType: "json",
+				success: function(data)
+				{
+					var state = data.state;
+					if (state && state > localStorage.getItem(username1 + "_" + username2))
+						$("#" + username2).append("<br>New message!");
+				}
+			});
+		});
+	</script></div>
+	<?php }
 	
 	if (strcmp($izvidac->username, $_SESSION["username"]) !== 0)?>
-		<script src="./scripts/chat.js"></script>
+		<script src="./scripts/chat.js?newversion"></script>
 		
 <?php require_once "view/_footer.php"; ?>

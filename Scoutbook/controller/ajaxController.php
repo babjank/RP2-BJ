@@ -97,5 +97,35 @@ class ajaxController
 		$message["objave"] = $objave;
 		sendJSONandExit($message);
 	}
+	
+	function getState($username1, $username2)
+	{
+		if (strcmp($username1, $username2) < 0)
+			$filename = "./chats/" . $username1 . "_" . $username2 . ".txt";
+		else
+			$filename = "./chats/" . $username2 . "_" . $username1 . ".txt";
+		if (!file_exists($filename))
+			return false;
+
+		return count(file($filename));
+	}
+	
+	function newMessage()
+	{
+		$username2 = $_GET["username2"];
+		
+		$state = $this->getState($_SESSION["username"], $username2);
+		
+		$message = [];
+		$message["state"] = $state;
+		sendJSONandExit($message);
+	}
+	
+	function username()
+	{
+		$message = [];
+		$message["username"] = $_SESSION["username"];
+		sendJSONandExit($message);
+	}
 }
 ?>
