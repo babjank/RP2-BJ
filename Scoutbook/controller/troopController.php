@@ -137,6 +137,19 @@ class TroopController
 		header("Location: scoutbook.php?rt=troop/news");
 		exit();
 	}
+	
+	public function objaviKomentar()
+	{
+		$id_obavijest = $_GET["id_obavijest"];
+		$sadrzaj = $_POST["komArea" . $id_obavijest];
+		
+		$tus = new Service();
+		
+		$tus->addComment($sadrzaj, date("Y-m-d"), $_SESSION["id"], $id_obavijest);
+		
+		header("Location: scoutbook.php?rt=troop/news");
+		exit();
+	}
 };
 
 ?>

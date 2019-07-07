@@ -157,7 +157,7 @@ echo "Napravio tablicu SUDJELUJE_NA.<br />";
 try
 {
 	$st = $db->prepare(
-		'CREATE TABLE IF NOT EXISTS OBAVIJESTI (' .
+		'CREATE TABLE IF NOT EXISTS OBAVIJEST (' .
 		'ID NUMERIC(5) UNSIGNED NOT NULL,' .
 		'SADRZAJ VARCHAR(500),' .
 		'NASLOV VARCHAR(50),' .
@@ -168,9 +168,27 @@ try
 
 	$st->execute();
 }
-catch( PDOException $e ) { exit( "PDO error [create SUDJELUJE_NA]: " . $e->getMessage() ); }
+catch( PDOException $e ) { exit( "PDO error [create OBAVIJEST]: " . $e->getMessage() ); }
 
-echo "Napravio tablicu SUDJELUJE_NA.<br />";
+echo "Napravio tablicu OBAVIJEST.<br />";
+
+try
+{
+	$st = $db->prepare(
+		'CREATE TABLE IF NOT EXISTS KOMENTAR (' .
+		'ID_KOMENTAR NUMERIC(5) UNSIGNED NOT NULL,' .
+		'SADRZAJ VARCHAR(255),' .
+		'DATUM DATE,' .
+		'OIB NUMBERIC(11) UNSIGNED,' .
+		'ID_OBAVIJEST NUMERIC(5) UNSIGNED,' .
+		'PRIMARY KEY(ID_KOMENTAR))'
+	);
+
+	$st->execute();
+}
+catch( PDOException $e ) { exit( "PDO error [create KOMENTAR]: " . $e->getMessage() ); }
+
+echo "Napravio tablicu KOMENTAR.<br />";
 
 // Ubaci neke patrole unutra
 try

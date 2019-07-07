@@ -361,6 +361,70 @@ class Service
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
 	}
+	
+	function getCommentsById($id_obavijesti)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT * FROM KOMENTAR WHERE ID_OBAVIJEST=:id_obavijest");
+			$st->execute(array("id_obavijest" => $id_obavijesti));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+
+		$arr = array();
+		while($row = $st->fetch())
+			$arr[] = ["id_komentar" => $row["ID_KOMENTAR"], "sadrzaj" => $row["SADRZAJ"], 
+						"datum" => $row["DATUM"], "autor" => $this->getUserById($row["OIB"])->username,
+						"id_obavijest" => $row["ID_OBAVIJEST"]];
+
+		return $arr;
+	}
+	
+	function getNewsIds()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT ID FROM OBAVIJESTI");
+			$st->execute();
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+
+		$arr = array();
+		while($row = $st->fetch())
+			$arr[] = $row["ID"];
+
+		return $arr;
+	}
+	
+	function getComments()
+	{
+		$newsIds = $this->getNewsIds();
+		$komentari = [];
+		
+		foreach ($newsIds as $newsId) {
+			$komentar = [];
+			$komentar["id"] = $newsId;
+			$komentar["komentari"] = $this->getCommentsById($newsId);
+			$komentari[] = $komentar;
+		}
+			
+		return $komentari;
+	}
+	
+	function addComment($sadrzaj, $datum, $oib, $id_obavijest)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("INSERT INTO KOMENTAR(sadrzaj, datum, oib, id_obavijest)
+			 VALUES (:sadrzaj, :datum, :oib, :id_obavijest)");
+			$st->execute(array("sadrzaj" => $sadrzaj, "datum" => $datum, "oib" => $oib, 
+			"id_obavijest" => $id_obavijest));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+	}
 };
 
 ?>

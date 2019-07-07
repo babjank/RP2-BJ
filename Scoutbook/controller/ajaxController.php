@@ -127,5 +127,27 @@ class ajaxController
 		$message["username"] = $_SESSION["username"];
 		sendJSONandExit($message);
 	}
+	
+	function komentari()
+	{
+		$id_obavijest = $_GET["id_obavijest"];
+		
+		$tus = new Service();
+		
+		$komentari = $tus->getCommentsById($id_obavijest);
+		$message = [];
+		$message["komentari"] = $komentari;
+		sendJSONandExit($message);
+	}
+	
+	function sviKomentari()
+	{
+		$tus = new Service();
+		
+		$komentari = $tus->getComments();
+		$message = [];
+		$message["komentari"] = $komentari;
+		sendJSONandExit($message);
+	}
 }
 ?>
