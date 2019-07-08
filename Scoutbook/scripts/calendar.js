@@ -1,9 +1,14 @@
+/*
+Skripta pomoću koje generiramo kalendare za trenutačni i slijedeći mjesec ovisno o listi aktivnosti.
+Također pomoću nje reagiramo na događaje kada kursor je preko nekog datuma kada je aktivnost.
+*/
+
 window.onload = function(){
   var d = new Date();
   var month = d.getMonth();
 
-  aktivnosti( month, 1 );
-  aktivnosti( month+1, 2 );
+  aktivnosti( month, 1 ); //stvara kalendar za trenutačni mjesec
+  aktivnosti( month+1, 2 ); //stvara kalendar za idući mjesec
   $( "body" ).on( "mouseover", "b", info_aktivnost );
   $( "body" ).on( "mouseout", "b", function () {
     $("div.aktivnost").css("background-color", "#FCF9F9");
@@ -43,11 +48,11 @@ function napravi( data, month, ix ){
   var year = d.getFullYear();
   var first_date = month_name[month] + " " + 1 + " " + year;
 
-  var first_day = new Date(year, month, 1).getDay();
+  var first_day = new Date(year, month, 1).getDay();  //na koji dan u tjednu je prvi dan
 
   var day_name = ['Ned','Pon','Uto','Sri','Čet','Pet','Sub'];
   var day_no = first_day;
-  var days = new Date(year, month+1, 0).getDate();
+  var days = new Date(year, month+1, 0).getDate();  //koliko dana ima mjesec
 
   var dan_aktivnosti = new Array();
   var id_aktivnosti = new Array();
@@ -55,6 +60,8 @@ function napravi( data, month, ix ){
   var id = data.id;
   var len = datumi.length;
   var j = 0;
+
+  //spremamo aktivnosti koje se u tom mjesecu održavaju u liste
   for( var i = 0; i < len; i++)
   {
     var str = datumi.pop(), m = id.pop();
@@ -88,12 +95,12 @@ function get_calendar(day_name, day_no, days, dan_aktivnosti, id_aktivnosti){
       if(c === day_no){
           break;
       }
-
+      //crtamo prazne ćelije dok ne dođemo do dana u tjednu kada kreće mjesec
       var td = $('<td></td>');
       td.html(" ");
       tr.append(td);
   }
-
+  //dalje redom punimo tablicu danima mjeseca, te označavamo one dane kada se održava aktivnost
   var count = 1;
   var change = false;
   for(; c<=6; c++){

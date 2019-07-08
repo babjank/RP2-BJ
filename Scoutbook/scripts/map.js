@@ -1,3 +1,7 @@
+/*
+Skripta pomoću koje crtamo kartu lokacije na kojoj se održava izlet.
+*/
+
 $( document ).ready( function()
 {
   koordinate();
