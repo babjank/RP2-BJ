@@ -43,6 +43,8 @@ class TroopController
 			$izvidac = $tus->getUserById($id);
 			$izvidacList[$id] = $izvidac->username;
 		}
+		
+		echo count($aktivnostList);
 
 		$byUser = true;
 		require_once "view/activity_index.php";

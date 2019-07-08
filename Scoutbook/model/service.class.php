@@ -316,9 +316,9 @@ class Service
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare("INSERT INTO AKTIVNOST(OIB, MJESTO, DATUM_ODRZAVANJA, OPIS, CIJENA, BROJ_CLANOVA, SIRINA, DUZINA)
-			 VALUES (:oib, :mjesto, :datum, :opis, :cijena, :broj_clanova, :sirina, :duzina)");
-			$st->execute(array("oib" => $id, "mjesto" => $mjesto, "datum" => $datum,
+			$st = $db->prepare("INSERT INTO AKTIVNOST(ID, OIB, MJESTO, DATUM_ODRZAVANJA, OPIS, CIJENA, BROJ_CLANOVA, SIRINA, DUZINA)
+			 VALUES (:id, :oib, :mjesto, :datum, :opis, :cijena, :broj_clanova, :sirina, :duzina)");
+			$st->execute(array("id" => $activityId, "oib" => $id, "mjesto" => $mjesto, "datum" => $datum,
 			"opis" => $opis, "cijena" => $cijena, "broj_clanova" => 1, 'sirina' => $sirina, 'duzina' => $duljina));
 		}
 		catch(PDOException $e) { $errorMsg = $e->getMessage(); }
