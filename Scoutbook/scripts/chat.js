@@ -20,10 +20,11 @@ $(document).ready(function()
 
 	$(".posaljiPoruku").on("click", function(event)
 	{
+		$("body").append("<hr id='chatHr'>");
 		var chatDiv = $("<div id='chat'>");
-		chatDiv.append("<h2>Chat</h2>");
-		chatDiv.append("<div id='chatWrap'><div id='chatArea'></div></div>")
-			   .append("<form id='sendMessageArea'><p>Tvoja poruka: </p><textarea id='sendie' maxLength='100'></textarea></form>");
+		chatDiv.append("<h1>CHAT</h1>");
+		chatDiv.append("<div id='chatArea'></div>")
+			   .append("<form id='sendMessageArea'><p>Tvoja poruka: </p><textarea id='sendie' maxLength='100' rows='10' cols='50'></textarea></form>");
 		$("body").append(chatDiv);
 		
 		username2 = $(this).parent().prop("id");
@@ -55,7 +56,7 @@ $(document).ready(function()
 				var length = text.length;
 				
 				if (length <= maxLength + 1) {
-					chat.send(text, username2);
+					chat.send(text);
 					$(this).val(""); 
 				} else {
 					$(this).val(text.substring(0, maxLength));
@@ -107,9 +108,13 @@ $(document).ready(function()
 				dataType: "json",
 				success: function(data)
 				{
+					if (data.state <= state) {
+						instanse = false;
+						return;
+					}
 					if (data.text) {
 						for (var i = 0 ; i < data.text.length ; ++i) {
-							$("#chatArea").append($("<br>" + data.text[i] + "<br>"));
+							$("#chatArea").append($("<br>" + data.text[i] + "<hr><br>"));
 						}
 					}
 					document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
@@ -138,4 +143,9 @@ $(document).ready(function()
 			}
 		});
 	}
+	
+	$("#chatArea").on("scroll", function(e)
+	{
+		e.preventDefault();
+	});
 });

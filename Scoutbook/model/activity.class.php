@@ -2,9 +2,9 @@
 
 class Activity
 {
-	protected $id, $id_izvidac, $datum, $mjesto, $opis, $cijena, $broj_clanova;
+	protected $id, $id_izvidac, $datum, $mjesto, $opis, $cijena, $broj_clanova, $sirina, $duzina;
 
-	function __construct($id, $id_izvidac, $datum, $mjesto, $opis, $cijena, $broj_clanova)
+	function __construct($id, $id_izvidac, $datum, $mjesto, $opis, $cijena, $broj_clanova, $sirina, $duzina)
 	{
 		$this->id = $id;
 		$this->id_izvidac = $id_izvidac;
@@ -13,6 +13,8 @@ class Activity
 		$this->opis = $opis;
 		$this->cijena = $cijena;
 		$this->broj_clanova = $broj_clanova;
+		$this->sirina = $sirina;
+		$this->duzina = $duzina;
 	}
 
 	function __get($prop) { return $this->$prop; }

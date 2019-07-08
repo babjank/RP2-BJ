@@ -3,7 +3,7 @@
 <div id="newsArea"></div><br><br>
 
 <?php if ($voda) {?>
-<form method="post" action="scoutbook.php?rt=troop/newNotification">
+<form id="novaObjavaForm" method="post" action="scoutbook.php?rt=troop/newNotification">
 	Naslov:
 	<input type="text" name="naslov"><br>
 	Tekst objave:<br>
@@ -12,6 +12,6 @@
 </form>
 <?php } ?>
 
-<script src="./scripts/obavijesti.js?"></script>
+<script src="./scripts/obavijesti.js?newversion"></script>
 
 <?php require_once "view/_footer.php"; ?>

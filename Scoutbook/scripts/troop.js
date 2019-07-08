@@ -23,7 +23,7 @@ $(document).ready(function()
 			ctx.fillRect(300 - 100, 30, 200, 70);
 			ctx.textAlign = "center";
 			ctx.fillStyle = "black";
-			ctx.font = "14px Verdana";
+			ctx.font = "16px Didot";
 			ctx.fillText("Odred izviđača Borongaj", 300, 65);
 	
 			var patrolaList = data.patrole;
@@ -57,7 +57,9 @@ $(document).ready(function()
 				else if (patrole[i].stupanj_znanja === "srebrni")
 					stupanj = "silver";
 				else stupanj = "bronze";
-				div.append("<img src='data/" + stupanj + ".png' height='50'>");
+				div.append("<img src='data/" + stupanj + ".png' height='50' align='middle'>");
+				div.append("<br><a href='scoutbook.php?rt=troop/patrol&ime_patrole=" 
+							+ patrole[i].ime_patrole + "'>Popis članova</a>");
 				$("body").append(div);
 				
 				$(function() {
@@ -99,7 +101,7 @@ $(document).ready(function()
 		}
 	});*/
   	
-  	$("#cnv").click(function() {
+  	$("#cnv").on("click", function() {
   		var rect = this.getBoundingClientRect();
 		var x = event.clientX - rect.left, y = event.clientY - rect.top;
 		var velicinaOdred = 600 / brPatrola;
@@ -107,7 +109,8 @@ $(document).ready(function()
 		var index = -1;
 		for (var i = 0 ; i < brPatrola ; ++i) {
 			if (x >= i * velicinaOdred + velicinaOdred / 2 - 50 && 
-				x <= i * velicinaOdred + velicinaOdred / 2 + 50) {
+				x <= i * velicinaOdred + velicinaOdred / 2 + 50 &&
+				y >= 300 && y <= 370) {
 				index = i;
 				break;	
 			}
@@ -117,5 +120,5 @@ $(document).ready(function()
 			$("#dialog" + index).dialog(opt).dialog("open");
 			return false;
 		}
-  	});
+  	});	
 });

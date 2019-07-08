@@ -36,8 +36,12 @@ try
 	$st->execute( array( 'tblname' => 'SUDJELUJE_NA' ) );
 	if( $st->rowCount() > 0 )
 		$has_tables = true;
-		
+
 	$st->execute( array( 'tblname' => 'OBAVIJESTI' ) );
+	if( $st->rowCount() > 0 )
+		$has_tables = true;
+		
+	$st->execute( array( 'tblname' => 'KOMENTAR' ) );
 	if( $st->rowCount() > 0 )
 		$has_tables = true;
 }
@@ -126,6 +130,8 @@ try
 		'OIB NUMERIC(11) UNSIGNED NOT NULL,' .
 		'DATUM_ODRZAVANJA DATE NOT NULL,' .
 		'MJESTO VARCHAR(50),' .
+		'SIRINA REAL,' .
+		'DUZINA REAL,' .
 		'OPIS VARCHAR(200),' .
 		'CIJENA FLOAT UNSIGNED,' .
 		'BROJ_CLANOVA int NOT NULL)'
@@ -162,7 +168,7 @@ try
 		'SADRZAJ VARCHAR(500),' .
 		'NASLOV VARCHAR(50),' .
 		'DATUM DATE,' .
-		'OIB NUMBERIC(11) UNSIGNED,' .
+		'OIB NUMERIC(11) UNSIGNED,' .
 		'PRIMARY KEY(ID))'
 	);
 
@@ -179,7 +185,7 @@ try
 		'ID_KOMENTAR NUMERIC(5) UNSIGNED NOT NULL,' .
 		'SADRZAJ VARCHAR(255),' .
 		'DATUM DATE,' .
-		'OIB NUMBERIC(11) UNSIGNED,' .
+		'OIB NUMERIC(11) UNSIGNED,' .
 		'ID_OBAVIJEST NUMERIC(5) UNSIGNED,' .
 		'PRIMARY KEY(ID_KOMENTAR))'
 	);
@@ -268,10 +274,10 @@ echo "Ubacio u tablicu RADIONICA.<br />";
 
 try
 {
-	$st = $db->prepare( 'INSERT INTO AKTIVNOST(OIB, DATUM_ODRZAVANJA, MJESTO, CIJENA, BROJ_CLANOVA) VALUES (:oib, :datum, :mjesto, :cijena, :broj)');
+	$st = $db->prepare( 'INSERT INTO AKTIVNOST(OIB, DATUM_ODRZAVANJA, MJESTO, CIJENA, BROJ_CLANOVA, OPIS, SIRINA, DUZINA) VALUES (:oib, :datum, :mjesto, :cijena, :broj, :opis, :sirina, :duzina)');
 
-	$st->execute( array( 'oib' => 11912355361 , 'datum' => "2019-06-27", 'mjesto' => 'PD Hunjka', 'cijena' => 10, 'broj' => 4) );
-	$st->execute( array( 'oib' => 52421322457 , 'datum' => "2019-06-15", 'mjesto' => 'Jarun', 'cijena' => 15, 'broj' => 1) );
+	$st->execute( array( 'oib' => 11912355361 , 'datum' => "2019-07-27", 'mjesto' => 'PD Hunjka', 'cijena' => 10, 'broj' => 4, 'opis' => 'Pješački izlet na Sljeme. Ručak u domu, uključeno u cijenu. Puno zabavnih aktivnosti i natjecanje u čvorovima.', 'sirina' => 45.9148989, 'duzina' => 15.9743518) );
+	$st->execute( array( 'oib' => 52421322457 , 'datum' => "2019-07-15", 'mjesto' => 'Savudrija', 'cijena' => 1000, 'broj' => 1, 'opis' => 'Ljetno logorovanje. Za detaljne informacije javiti se voditelju.', 'sirina' => 45.4933399, 'duzina' => 13.5019488) );
 }
 catch( PDOException $e ) { exit( "PDO error [insert AKTIVNOST]: " . $e->getMessage() ); }
 

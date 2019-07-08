@@ -1,13 +1,13 @@
 <?php require_once "view/_loginHeader.php";
 
 if (isset($message))
-	echo $message . " Pokušajte ponovno.<br><br>"; ?>
+	echo "<div id='errorMsg'>" . $message . " Pokušajte ponovno.</div><br>"; ?>
 
-<form method="post" action="scoutbook.php?rt=login/authentication">
-	Korisničko ime:
-	<input type="text" name="username"><br>
-	Password:
-	<input type="password" name="password"><br>
+<form id="loginForm" method="post" action="scoutbook.php?rt=login/authentication">
+	<span class="col-30">Korisničko ime: </span>
+	<input class="col-70" type="text" name="username"><br>
+	<span class="col-30">Password: </span>
+	<input class="col-70" type="password" name="password"><br>
 	<button type="submit" name="signin">Sign in!</button>
 </form>
 

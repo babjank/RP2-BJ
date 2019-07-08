@@ -2,7 +2,7 @@
 
 class User
 {
-	protected $id, $username, $password_hash, $email, $ulogiran, $ime_patrole;
+	protected $id, $ime, $prezime, $adresa, $datum_upisa, $ime_patrole, $email, $username, $password_hash, $ulogiran, $slika;
 
 	function __construct($id, $ime, $prezime, $adresa, $datum_upisa, $ime_patrole, $email, $username, $password_hash, $ulogiran, $slika)
 	{

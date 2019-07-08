@@ -23,7 +23,7 @@ class Service
 			return null;
 		else
 			return new User($row["OIB"], $row["IME"], $row["PREZIME"], $row["ADRESA"],
-							$row["DATUM_UPISA"], $row["IME_PATROLE"], $row["EMAIL"], $row["USERNAME"], 
+							$row["DATUM_UPISA"], $row["IME_PATROLE"], $row["EMAIL"], $row["USERNAME"],
 							$row["PASSWORD_HASH"], $row["ULOGIRAN"], $row["SLIKA"]);
 	}
 
@@ -42,8 +42,8 @@ class Service
 			return null;
 		else
 			return new User($row["OIB"], $row["IME"], $row["PREZIME"], $row["ADRESA"],
-							$row["DATUM_UPISA"], $row["IME_PATROLE"], $row["EMAIL"], $row["USERNAME"], 
-							$row["PASSWORD_HASH"], $row["ULOGIRAN"], $row["slika"]);
+							$row["DATUM_UPISA"], $row["IME_PATROLE"], $row["EMAIL"], $row["USERNAME"],
+							$row["PASSWORD_HASH"], $row["ULOGIRAN"], $row["SLIKA"]);
 	}
 
 
@@ -102,7 +102,7 @@ class Service
 		if($row === false)
 			return null;
 		else
-			return new Activity($row["ID"], $row["OIB"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["OPIS"], $row["CIJENA"], $row["BROJ_CLANOVA"]);
+			return new Activity($row["ID"], $row["OIB"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["OPIS"], $row["CIJENA"], $row["BROJ_CLANOVA"], $row["SIRINA"], $row["DUZINA"]);
 	}
 
 
@@ -119,7 +119,7 @@ class Service
 		$arr = array();
 		while($row = $st->fetch())
 		{
-			$arr[] = new Activity($row["ID"], $row["ID_IZVIDAC"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["opis"], $row["CIJENA"], $row["BROJ_CLANOVA"]);
+			$arr[] = new Activity($row["ID"], $row["OIB"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["OPIS"], $row["CIJENA"], $row["BROJ_CLANOVA"], $row["SIRINA"], $row["DUZINA"]);
 		}
 
 		return $arr;
@@ -139,8 +139,8 @@ class Service
 		while($row = $st->fetch())
 		{
 			$activity = $this->getActivityById($row["ID_AKTIVNOST"]);
-			$arr[] = new Activity($activity->id, $sctivity->id_izvidac, $activity->datum, $activity->mjesto,
-			$activity->opis, $activity->cijena, $activity->broj_clanova);
+			$arr[] = new Activity($activity->id, $activity->id_izvidac, $activity->datum, $activity->mjesto,
+			$activity->opis, $activity->cijena, $activity->broj_clanova, $activity->sirina, $activity->duzina);
 		}
 
 		return $arr;
@@ -152,18 +152,18 @@ class Service
 		{
 			$db = DB::getConnection();
 			$st = $db->prepare("SELECT * FROM SUDJELUJE_NA WHERE ID_AKTIVNOST=:id_activity");
-			$st->execute(array("id_project" => $id_project));
+			$st->execute(array("id_activity" => $id_activity));
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
 
 		$arr = array();
 		while($row = $st->fetch())
-			$arr[] = new Member($row["ID"], $row["ID_AKTIVNOST"], $row["ID_IZVIDAC"], $row["ULOGA"]);
+			$arr[] = new Member($row["ID"], $row["ID_AKTIVNOST"], $row["OIB"], $row["ULOGA"]);
 
 		return $arr;
 	}
-	
-	
+
+
 	function changeUserInfo($old_username, $username, $password, $slika)
 	{
 		try
@@ -171,12 +171,12 @@ class Service
 			$db = DB::getConnection();
 			$st = $db->prepare("UPDATE IZVIDAC SET USERNAME=:username, PASSWORD_HASH=:password, ULOGIRAN=:ulogiran,
 			 					SLIKA=:slika WHERE USERNAME=:old_username");
-			$st->execute(array("old_username" => $old_username, "username" => $username, 
+			$st->execute(array("old_username" => $old_username, "username" => $username,
 							"password" => $password, "ulogiran" => 1, "slika" => $slika));
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
 	}
-	
+
 	function checkIfLeaderByID($id)
 	{
 		try
@@ -186,51 +186,68 @@ class Service
 			$st->execute(array("oib" => $id));
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
-		
+
 		$row = $st->fetch();
 		if ($row === false)
 			return false;
 		return true;
 	}
-	
+
 	function checkIfLeaderByUsername($username)
 	{
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare("SELECT * FROM VODA,IZVIDAC WHERE VODA.OIB=IZVIDAC.OIB 
+			$st = $db->prepare("SELECT * FROM VODA,IZVIDAC WHERE VODA.OIB=IZVIDAC.OIB
 								AND USERNAME=:username");
 			$st->execute(array("username" => $username));
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
-		
+
 		$row = $st->fetch();
 		if ($row === false)
 			return false;
 		return true;
 	}
-	
+
 	function insertMember($oib, $ime, $prezime, $adresa, $email, $ime_patrole)
 	{
 		$errorMsg = "OK";
-		
+
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare("INSERT INTO IZVIDAC(oib, ime, prezime, adresa, datum_upisa, 
-			ime_patrole, email, username, password_hash, ulogiran)
+			$st = $db->prepare("INSERT INTO IZVIDAC(OIB, IME, PREZIME, ADRESA, DATUM_UPISA,
+			IME_PATROLE, EMAIL, USERNAME, PASSWORD_HASH, ULOGIRAN)
 			VALUES (:oib, :ime, :prezime, :adresa, :datum_upisa, :ime_patrole,
 			:email, :username, :password_hash, :ulogiran)");
 			$st->execute(array("oib" => $oib, "ime" => $ime, "prezime" => $prezime, "adresa" => $adresa,
-			"datum_upisa" => date("Y-m-d"), "ime_patrole" => $ime_patrole, "email" => $email, 
+			"datum_upisa" => date("Y-m-d"), "ime_patrole" => $ime_patrole, "email" => $email,
 			"username" => $oib, "password_hash" => password_hash(strtolower($ime_patrole), PASSWORD_DEFAULT),
 			"ulogiran" => 0));
 		}
 		catch(PDOException $e) { $errorMsg = $e->getMessage(); }
-		
+
 		return $errorMsg;
 	}
-	
+
+	function insertMemberOfActivity($id_activity, $id_user)
+	{
+		$errorMsg = 'OK';
+
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("INSERT INTO SUDJELUJE_NA(ID_AKTIVNOST, OIB, ULOGA)
+			 VALUES (:id_activity, :id_user, :uloga)");
+			$st->execute(array("id_activity" => $id_activity, "id_user" => $id_user,
+			"uloga" => "sudionik"));
+		}
+		catch(PDOException $e) { $errorMsg = $e->getMessage(); }
+
+		return $errorMsg;
+	}
+
 	function getLeadersPatrol($id)
 	{
 		try
@@ -245,13 +262,13 @@ class Service
 
 		return $row["IME_PATROLE"];
 	}
-	
+
 	function getMaxId()
 	{
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare("SELECT id FROM AKTIVNOST");
+			$st = $db->prepare("SELECT ID FROM AKTIVNOST");
 			$st->execute();
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
@@ -260,14 +277,14 @@ class Service
 		$max = -1;
 		while($row = $st->fetch())
 		{
-			if ((int)$row["id"] > $max)
-				$max  = (int)$row["id"];
+			if ((int)$row["ID"] > $max)
+				$max  = (int)$row["ID"];
 		}
 
 		return $max;
 	}
-	
-	function insertActivity($id, $mjesto, $datum, $cijena, $opis)
+
+	function insertActivity($id, $mjesto, $datum, $cijena, $opis, $sirina, $duljina)
 	{
 		$activityId = $this->getMaxId() + 1;
 		$errorMsg = "OK";
@@ -275,27 +292,27 @@ class Service
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare("INSERT INTO AKTIVNOST(oib, mjesto, datum_odrzavanja, opis, cijena, broj_clanova)
-			 VALUES (:oib, :mjesto, :datum, :opis, :cijena, :broj_clanova)");
-			$st->execute(array("oib" => $id, "mjesto" => $mjesto, "datum" => $datum, 
-			"opis" => $opis, "cijena" => $cijena, "broj_clanova" => 1));
+			$st = $db->prepare("INSERT INTO AKTIVNOST(OIB, MJESTO, DATUM_ODRZAVANJA, OPIS, CIJENA, BROJ_CLANOVA, SIRINA, DUZINA)
+			 VALUES (:oib, :mjesto, :datum, :opis, :cijena, :broj_clanova, :sirina, :duzina)");
+			$st->execute(array("oib" => $id, "mjesto" => $mjesto, "datum" => $datum,
+			"opis" => $opis, "cijena" => $cijena, "broj_clanova" => 1, 'sirina' => $sirina, 'duzina' => $duljina));
 		}
 		catch(PDOException $e) { $errorMsg = $e->getMessage(); }
-		
+
 		if (strcmp($errorMsg, "OK") === 0) {
 			try
 			{
 				$db = DB::getConnection();
-				$st = $db->prepare("INSERT INTO SUDJELUJE_NA(id_aktivnost, oib, uloga)
+				$st = $db->prepare("INSERT INTO SUDJELUJE_NA(ID_AKTIVNOST, OIB, ULOGA)
 				 VALUES (:id_aktivnost, :oib, :uloga)");
 				$st->execute(array("id_aktivnost" => $activityId, "oib" => $id, "uloga" => "voda izleta"));
 			}
 			catch(PDOException $e) { $errorMsg = $e->getMessage(); }
 			}
-		
+
 		return [$errorMsg, $activityId];
 	}
-	
+
 	function getUsersByPatrol($ime_patrole)
 	{
 		try
@@ -314,7 +331,7 @@ class Service
 
 		return $arr;
 	}
-	
+
 	function getPatrolsLeader($ime_patrole)
 	{
 		try
@@ -330,7 +347,7 @@ class Service
 
 		return $row["USERNAME"];
 	}
-	
+
 	function getNews()
 	{
 		try
@@ -348,20 +365,20 @@ class Service
 
 		return $arr;
 	}
-	
+
 	function insertNews($sadrzaj, $naslov, $datum, $autor)
 	{
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare("INSERT INTO OBAVIJESTI(sadrzaj, naslov, datum, oib)
+			$st = $db->prepare("INSERT INTO OBAVIJESTI(SADRZAJ, NASLOV, DATUM, OIB)
 			 VALUES (:sadrzaj, :naslov, :datum, :oib)");
-			$st->execute(array("sadrzaj" => $sadrzaj, "naslov" => $naslov, "datum" => $datum, 
+			$st->execute(array("sadrzaj" => $sadrzaj, "naslov" => $naslov, "datum" => $datum,
 			"oib" => $autor));
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
 	}
-	
+
 	function getCommentsById($id_obavijesti)
 	{
 		try
@@ -374,13 +391,13 @@ class Service
 
 		$arr = array();
 		while($row = $st->fetch())
-			$arr[] = ["id_komentar" => $row["ID_KOMENTAR"], "sadrzaj" => $row["SADRZAJ"], 
+			$arr[] = ["id_komentar" => $row["ID_KOMENTAR"], "sadrzaj" => $row["SADRZAJ"],
 						"datum" => $row["DATUM"], "autor" => $this->getUserById($row["OIB"])->username,
 						"id_obavijest" => $row["ID_OBAVIJEST"]];
 
 		return $arr;
 	}
-	
+
 	function getNewsIds()
 	{
 		try
@@ -397,30 +414,30 @@ class Service
 
 		return $arr;
 	}
-	
+
 	function getComments()
 	{
 		$newsIds = $this->getNewsIds();
 		$komentari = [];
-		
+
 		foreach ($newsIds as $newsId) {
 			$komentar = [];
 			$komentar["id"] = $newsId;
 			$komentar["komentari"] = $this->getCommentsById($newsId);
 			$komentari[] = $komentar;
 		}
-			
+
 		return $komentari;
 	}
-	
+
 	function addComment($sadrzaj, $datum, $oib, $id_obavijest)
 	{
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare("INSERT INTO KOMENTAR(sadrzaj, datum, oib, id_obavijest)
+			$st = $db->prepare("INSERT INTO KOMENTAR(SADRZAJ, DATUM, OIB, ID_OBAVIJEST)
 			 VALUES (:sadrzaj, :datum, :oib, :id_obavijest)");
-			$st->execute(array("sadrzaj" => $sadrzaj, "datum" => $datum, "oib" => $oib, 
+			$st->execute(array("sadrzaj" => $sadrzaj, "datum" => $datum, "oib" => $oib,
 			"id_obavijest" => $id_obavijest));
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }

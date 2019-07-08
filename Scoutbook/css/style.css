@@ -1,9 +1,13 @@
 body {
-  max-width: 90%;
+  	max-width: 70%;
+  	margin: auto;
+  	background-color: #FCF9F9;
+  	border: 1px solid #E4E4E4;
+  	font-family: Didot;
 }
 
 li {
-	display: inline;
+	display: inline-block;
 	margin: 15px;
 }
 
@@ -13,10 +17,7 @@ nav {
   	width: 100%;
 	text-align: center;
 	clear: both;
-}
-
-body {
-	font-family: 'Noto Sans HK', sans-serif;
+	border-bottom: 1px solid #D2D2D2;
 }
 
 button {
@@ -26,11 +27,6 @@ button {
 a {
 	color: black;
 	text-decoration: none;
-}
-
-a:hover {
-  color: #550A21;
-  text-decoration: underline;
 }
 
 h3 {
@@ -59,7 +55,7 @@ h4 {
 }
 
 #logout {
-	color: #FFAD33;
+	color: #FF923D;
 	float: right;
 	margin-right: 5px;
 	margin-top: 1px;
@@ -67,7 +63,7 @@ h4 {
 }
 
 #logout:hover {
-	color: white;
+	color: #FFE917;
   	text-decoration: underline;
 }
 
@@ -77,4 +73,392 @@ h4 {
 	font-size: 40px;
 	float: left;
 	margin: 7px;
+}
+
+.current {
+	background-color: #D2D2D2 !important;
+}
+
+#nav li {
+	margin: 4px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #E4E4E4;
+	box-shadow: 2px 2px 4px #9E9E9E;
+}
+
+#nav li:hover {
+	background-color: #D2D2D2;
+}
+
+.autor, .datum, .prikaziKomentare, .dodajKomentare, .specChar {
+	font-size: 12px;
+}
+
+.datum {
+	float: right;
+}
+
+.komSadrzajArea {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 2px;
+	padding-right: 2px;
+	border-top: 1px solid #550A21;
+	border-bottom: 1px solid #550A21;
+	box-shadow: 5px 5px 5px #E4E4E4;
+}
+
+.objava {
+	border: 4px solid #E4E4E4;
+	border-style: double;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+	font-size: 18px;
+}
+
+.naslov {
+	font-family: 'Fresca', sans-serif;
+	color: #550A21;
+	font-size: 28px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.prikaziKomentare, .dodajKomentare, .posaljiPoruku {
+     cursor: pointer;
+}
+
+.prikaziKomentare:hover, .dodajKomentare:hover, .autor a:hover, .autorDatum a:hover,
+.posaljiPoruku:hover {
+     text-shadow: 5px 5px 5px #B3B3B3;
+}
+
+.autorDatum {
+	font-size: 12px;
+	color: #550A21;
+}
+
+.komentarIt {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	font-size: 14px;
+}
+
+.objava hr, #chatHr, #activityHr {
+	border-top: 1px solid #8c8b8b;
+	text-align: center;
+}
+
+.objava hr:after, #chatHr:after, #activityHr:after {
+	content: '§';
+	display: inline-block;
+	position: relative;
+	top: -14px;
+	padding: 0 10px;
+	background: #f0f0f0;
+	color: #8c8b8b;
+	font-size: 18px;
+	-webkit-transform: rotate(60deg);
+	-moz-transform: rotate(60deg);
+	transform: rotate(60deg);
+}
+
+#mapa {
+  width: 1000px;
+}
+
+#popis>li {
+  display: block;
+}
+
+.profilKorisnika {
+	text-align: center;
+	margin-top: 15px;
+	margin-bottom: 20px;
+	line-height: 1.6;
+	border: 4px solid #E4E4E4;
+	border-style: double;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+  	width: 80%;
+}
+
+.profilKorisnika h1 {
+	font-family: 'Fresca', sans-serif;
+	color: #550A21;
+	margin-bottom: -2px;
+}
+
+.profilKorisnika .profilnaSlika {
+	max-height: 250px;
+	border-radius: 20%;
+	box-shadow: 3px 3px 3px #B3B3B3;
+	margin-bottom: 15px;
+}
+
+.profilKorisnika .kategorija {
+	font-family: 'Fresca', sans-serif;
+	color: #550A21;
+}
+
+.aktivnost .kategorija, #prikazAktivnosti .kategorija {
+	color: #550A21;
+}
+
+.profilKorisnika a:hover, #prikazAktivnosti a:hover {
+	text-shadow: 5px 5px 5px #B3B3B3;
+}
+
+.profilKorisnika .badgeImg {
+	margin-left: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.ui-dialog, .ui-dialog-content {
+	font-family: Didot;
+	text-align: center;
+}
+
+.ui-dialog a {
+	color: black;
+	text-decoration: none;
+}
+
+.ui-dialog a:hover {
+	text-shadow: 5px 5px 5px #B3B3B3;
+}
+
+.ui-dialog-titlebar {
+	font-family: Didot;
+	background-image: none;
+ 	background-color: #550A21 !important;
+ 	color: white !important;
+}
+
+.patrolMember div, .patrolMember a {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.patrolMember div {
+	margin-left: 15px;
+}
+
+.patrolMember a {
+	margin-left: 3px;
+	margin-right: 15px;
+	font-size: 18px;
+}
+
+.patrolMember a:hover, .aktivnost a:hover, #errorMsg a:hover {
+	text-shadow: 5px 5px 5px #B3B3B3;
+}
+
+.patrolMember {
+	width: 80%;
+	margin-left: auto;
+  	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 4px solid #E4E4E4;
+	border-style: double;
+	padding: 15px;
+}
+
+#chat h1 {
+	text-align: center;
+	font-family: 'Fresca', sans-serif;
+	color: #550A21;
+	margin-top: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+	margin-bottom: 2px;
+}
+
+#chat {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 4px solid #E4E4E4;
+	border-style: double;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+  	width: 80%;
+}
+
+#chatArea {
+	overflow-y: scroll; 
+	height: 400px;
+	margin-left: 20px;
+	margin-right: 20px;
+	border: 4px solid #E4E4E4;
+	border-style: double;
+	background-color: #F7F3F3;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+#chatArea span {
+	font-family: 'Fresca', sans-serif;
+	font-variant: small-caps;
+	font-weight: bold;
+	color: #550A21;
+}
+
+#chatArea hr {
+	height: 6px;
+	background: url(http://ibrahimjabbari.com/images/hr-11.png) repeat-x 0 0;
+    border: 0;
+    margin-bottom: -15px;
+}
+
+#chat form {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+#cnv {
+	padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+#patrolText {
+	text-align: center;
+	margin-top: 20px;
+}
+
+#loginForm, #prviloginForm, #novaAktivnostForm, #newMemberForm {
+	margin-left: 15%;
+    margin-right: 15%;
+    width: 70%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+input, textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	resize: vertical;
+}
+
+.col-30 {
+  float: left;
+  width: 30%;
+  margin-top: 6px;
+}
+
+.col-70 {
+  float: left;
+  width: 70%;
+  margin-top: 6px;
+}
+
+button {
+	padding: 10px 15px;
+  	margin-top: 10px;
+ 	border: none;
+ 	border-radius: 4px;
+ 	cursor: pointer;
+ 	font-family: Didot;
+  	font-size: 14px;
+}
+
+#loginForm button, #prviloginForm button, #novaAktivnostForm button, #newMemberForm button,
+#prikazAktivnosti button {
+	float: right;
+}
+
+#novaObjavaForm {
+	margin-top: -5px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+#errorMsg {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.aktivnost, #prikazAktivnosti {
+	border: 4px solid #E4E4E4;
+	border-style: double;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+	font-size: 18px;
+}
+
+#kalendar {
+	height: 260px;
+	margin: 20px;
+	display: inline-block;
+	margin-left: 20%;
+}
+
+b {
+	border: 2px dotted #550A21;
+	padding: 2px;
+	cursor: pointer;
+}
+
+#prikazAktivnosti h4 {
+	margin-top: -10px;
+}
+
+#prikazAktivnosti {
+	line-height: 2.2;
+	display: inline-block;
+}
+
+#mapa {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+#prikazAktivnosti #popis {
+	margin-top: 2px;
+}
+
+#prikazAktivnosti li {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#prikazAktivnosti li:before {
+	content: "•";
+	color: #550A21;
+	width: 1em;
+  	margin-left: -2em
 }
