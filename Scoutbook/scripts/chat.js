@@ -88,7 +88,6 @@ $(document).ready(function()
 				success: function(data)
 				{
 					state = data.state;
-					localStorage.setItem(username1 + "_" + username2, state);
 					instanse = false;
 				}
 			});
@@ -120,7 +119,16 @@ $(document).ready(function()
 					document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
 					instanse = false;
 					state = data.state;
-					localStorage.setItem(username1 + "_" + username2, state);
+					$.ajax(
+					{
+						url: "scoutbook.php?rt=ajax/updateProcitano",
+						data: {"username1": username1, "username2": username2, "state": state},
+						type: "GET",
+						dataType: "json",
+						success: function(data)
+						{
+						}
+					});
 				}
 			});
 		} else {

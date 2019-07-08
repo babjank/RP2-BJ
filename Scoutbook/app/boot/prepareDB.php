@@ -44,6 +44,10 @@ try
 	$st->execute( array( 'tblname' => 'KOMENTAR' ) );
 	if( $st->rowCount() > 0 )
 		$has_tables = true;
+		
+	$st->execute( array( 'tblname' => 'PROCITANO' ) );
+	if( $st->rowCount() > 0 )
+		$has_tables = true;	
 }
 catch( PDOException $e ) { exit( "PDO error [show tables]: " . $e->getMessage() ); }
 
@@ -188,6 +192,22 @@ try
 		'OIB NUMERIC(11) UNSIGNED,' .
 		'ID_OBAVIJEST NUMERIC(5) UNSIGNED,' .
 		'PRIMARY KEY(ID_KOMENTAR))'
+	);
+
+	$st->execute();
+}
+catch( PDOException $e ) { exit( "PDO error [create KOMENTAR]: " . $e->getMessage() ); }
+
+echo "Napravio tablicu KOMENTAR.<br />";
+
+try
+{
+	$st = $db->prepare(
+		'CREATE TABLE IF NOT EXISTS PROCITANO (' .
+		'OIB1 NUMERIC(11) UNSIGNED,' .
+		'OIB2 NUMERIC(11) UNSIGNED,' .
+		'BROJ_PROCITANIH NUMERIC(5) UNSIGNED,' .
+		'PRIMARY KEY(OIB1, OIB2))'
 	);
 
 	$st->execute();

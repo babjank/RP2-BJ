@@ -113,12 +113,16 @@ class ajaxController
 
 	function newMessage()
 	{
+		$tus = new Service();
+		
 		$username2 = $_GET["username2"];
 
 		$state = $this->getState($_SESSION["username"], $username2);
+		$procitano = $tus->getReadMessages($_SESSION["id"], $tus->getUserByUsername($username2)->id);
 
 		$message = [];
 		$message["state"] = $state;
+		$message["procitano"] = $procitano;
 		sendJSONandExit($message);
 	}
 
@@ -193,6 +197,17 @@ class ajaxController
 		$message['duzina'] = $aktivnost->duzina;
 
 		sendJSONandExit( $message );
+	}
+	
+	function updateProcitano()
+	{
+		$tus = new Service();
+	
+		$oib1 = $tus->getUserByUsername($_GET["username1"])->id;
+		$oib2 = $tus->getUserByUsername($_GET["username2"])->id;
+		$state = $_GET["state"];
+		
+		$tus->updateReadMessages($oib1, $oib2, $state);
 	}
 }
 ?>

@@ -244,6 +244,18 @@ class Service
 			"uloga" => "sudionik"));
 		}
 		catch(PDOException $e) { $errorMsg = $e->getMessage(); }
+		
+		if (strcmp($errorMsg, "OK") === 0) {
+			$broj = ($this->getActivityById($id_activity))->broj_clanova + 1;
+	
+			try
+			{
+				$db = DB::getConnection();
+				$st = $db->prepare("UPDATE AKTIVNOST SET BROJ_CLANOVA=:broj_clanova WHERE ID=:id_activity");
+				$st->execute(array("id_activity" => $id_activity, "broj_clanova" => $broj));
+			}
+			catch(PDOException $e) { $errorMsg = $e->getMessage(); }
+		}
 
 		return $errorMsg;
 	}
@@ -441,6 +453,51 @@ class Service
 			"id_obavijest" => $id_obavijest));
 		}
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+	}
+	
+	function getReadMessages($oib1, $oib2) {
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT BROJ_PROCITANIH FROM PROCITANO WHERE OIB1=:oib1 AND OIB2=:oib2");
+			$st->execute(array("oib1" => $oib1, "oib2" => $oib2));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+
+		$row = $st->fetch();
+		if ($row)
+			return $row["BROJ_PROCITANIH"];
+		else
+			return false;
+	}
+	
+	function updateReadMessages($oib1, $oib2, $state) {
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare("SELECT * FROM PROCITANO WHERE OIB1=:oib1 AND OIB2=:oib2");
+			$st->execute(array("oib1" => $oib1, "oib2" => $oib2));
+		}
+		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+		
+		if ($st->fetch()) {
+			try
+			{
+				$db = DB::getConnection();
+				$st = $db->prepare("UPDATE PROCITANO SET BROJ_PROCITANIH=:state WHERE OIB1=:oib1 AND OIB2=:oib2");
+				$st->execute(array("state" => $state, "oib1" => $oib1, "oib2" => $oib2));
+			}
+			catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+		} else {
+			try
+			{
+				$db = DB::getConnection();
+				$st = $db->prepare("INSERT INTO PROCITANO(OIB1, OIB2, BROJ_PROCITANIH)
+			 						VALUES (:oib1, :oib2, :state)");
+				$st->execute(array("oib1" => $oib1, "oib2" => $oib2, "state" => $state));
+			}
+			catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
+		}
 	}
 };
 

@@ -27,7 +27,8 @@
 				success: function(data)
 				{
 					var state = data.state;
-					if (state && state > localStorage.getItem(username1 + "_" + username2))
+					var procitano = data.procitano;
+					if (state && state > procitano)
 						$("#patrol" + username2).append("<img class='newMessageIcon' src='./data/newmessage.png' height='50' style='float:right; margin-right:20px; vertical-align:middle;'>");
 				}
 			});
