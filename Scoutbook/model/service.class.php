@@ -257,6 +257,18 @@ class Service
 			catch(PDOException $e) { $errorMsg = $e->getMessage(); }
 		}
 
+		if (strcmp($errorMsg, "OK") === 0) {
+			$broj = ($this->getActivityById($id_activity))->broj_clanova + 1;
+
+			try
+			{
+				$db = DB::getConnection();
+				$st = $db->prepare("UPDATE AKTIVNOST SET BROJ_CLANOVA=:broj_clanova WHERE ID=:id_activity");
+				$st->execute(array("id_activity" => $id_activity, "broj_clanova" => $broj));
+			}
+			catch(PDOException $e) { $errorMsg = $e->getMessage(); }
+			}
+
 		return $errorMsg;
 	}
 
