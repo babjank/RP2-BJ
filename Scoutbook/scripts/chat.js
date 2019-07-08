@@ -6,6 +6,7 @@ $(document).ready(function()
 	var mes;
 	var file;
 
+	// Upit pomoću kojega dohvaćamo korisničko ime trenutno ulogiranog korisnika
 	$.ajax(
 	{
 		url: "scoutbook.php?rt=ajax/username",
@@ -18,6 +19,7 @@ $(document).ready(function()
 		}
 	});
 
+	// Reagiramo na klik na element s klasom "posaljiPoruku" - prikazujemo odjeljak koji omogućuje razgovor s danim korisnikom
 	$(".posaljiPoruku").on("click", function(event)
 	{
 		$("body").append("<hr id='chatHr'>");
@@ -48,6 +50,7 @@ $(document).ready(function()
 			}
 		});
 		
+		// Poruka se šalje nakon što pritisnemo i otpustimo tipku Return/Enter
 		$("#sendie").keyup(function(event)
 		{
 			if (event.keyCode == 13) {
@@ -71,12 +74,13 @@ $(document).ready(function()
 	{
 		this.update = updateChat; // updateChat provjerava postoje li novi zapisi u tekstualnoj datoteci
 								  // na serveru. Ako postoje, dodaje ih u chat.
-		this.send = sendChat; // poziva se kada je poruka poslana. Šalje ju serveru.
-		this.getState = getStateOfChat; // provjerava koliko linija tekstualna datoteka ima.
+		this.send = sendChat; // Poziva se kada je poruka poslana. Šalje ju serveru.
+		this.getState = getStateOfChat; // Stvara novu datoteku ako je potrebno
 	}
 	
 	function getStateOfChat()
 	{
+		// Dohvaćamo trenutno stanje razgovora (otvara se nova datoteka za pohranjivanje razgovora ako već ne postoji)
 		if (!instanse) {
 			instanse = true;
 			$.ajax(
@@ -96,6 +100,7 @@ $(document).ready(function()
 	
 	function updateChat()
 	{
+		// Provjeravamo ima li novih poruka - ako da, ispisujemo ih na stranicu
 		if (!instanse)
 		{
 			instanse = true;
@@ -138,6 +143,7 @@ $(document).ready(function()
 	
 	function sendChat(message) 
 	{
+		// Kontaktiramo PHP datoteku da pohrani novu poruku te osvježavamo chat
 		updateChat();
 		$.ajax(
 		{
@@ -151,9 +157,4 @@ $(document).ready(function()
 			}
 		});
 	}
-	
-	$("#chatArea").on("scroll", function(e)
-	{
-		e.preventDefault();
-	});
 });

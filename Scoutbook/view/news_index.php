@@ -1,4 +1,7 @@
-<?php require_once "view/_header.php"; ?>
+<?php require_once "view/_header.php"; 
+
+// Ako je trenutno ulogirani korisnik vođa, može vidjeti formu za unos nove obavijesti. Ostatak vezan uz prikaz sadržaja obavlja skripta obavijesti.js (dohvaća i prikazuje obavijesti, komentare,...)
+?>
 
 <div id="newsArea"></div><br><br>
 
@@ -12,6 +15,6 @@
 </form>
 <?php } ?>
 
-<script src="./scripts/obavijesti.js?newversion"></script>
+<script src="./scripts/obavijesti.js"></script>
 
 <?php require_once "view/_footer.php"; ?>

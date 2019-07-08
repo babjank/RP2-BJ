@@ -1,6 +1,7 @@
 <?php require_once "view/_header.php"; ?>
 
 <?php
+	// Za svaku aktivnost ispisujemo osnovne informacije o njoj, pri čemu se klikom na ime vođe može posjetiti njegov profil, a klikom na mjesto aktivnosti mogu se vidjeti detalji aktivnosti, uključujući i mapu koja prikazuje odgovarajuću lokaciju
 	foreach($aktivnostList as $aktivnost)
 	{
 		$izvidac = $izvidacList[$aktivnost->id_izvidac];

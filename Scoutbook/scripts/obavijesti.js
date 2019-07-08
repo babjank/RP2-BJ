@@ -1,6 +1,7 @@
 $(document).ready(function()
 {
 	var komPrikazani = false, dodajKom = false;
+	// Upit pomoću kojega dohvaćamo sve obavijesti trenutno zapisane u bazi podataka
 	$.ajax(
 	{
 		url: "scoutbook.php?rt=ajax/news",
@@ -28,6 +29,7 @@ $(document).ready(function()
 				$("#newsArea").prepend(div);
 			}
 			
+			// Upit pomoću kojega doznajemo koliko komentara ima na pojedinoj obavijesti - za svaku obavijest zapisujemo broj komentara u zagrade unutar span elementa s IDjem "prikaziKom"
 			$.ajax(
 			{
 				url: "scoutbook.php?rt=ajax/sviKomentari",
@@ -44,6 +46,11 @@ $(document).ready(function()
 		}
 	});
 	
+	/* Prilikom klika na element klase "prikaziKomentare", na stranicu postavljamo sve komentare 
+	odgovarajuće obavijesti. Dodajemo ih u div element s odgovarajućim IDjem.
+	Naime, za svaku obavijest postoji div element s IDjem nastalim konkatenacijom riječi "prikazani" i
+	ID-a dane obavijesti.
+	*/
 	$("body").on("click", ".prikaziKomentare", function(event)
 	{
 		id = $(this).prop("id").substring(10);
@@ -80,6 +87,14 @@ $(document).ready(function()
 		}
 	});
 	
+	/* Prilikom klika na element klase "dodajKomentare", na stranicu postavljamo formu pomoću koje trenutno
+	ulogirani korisnik može dodavati nove komentare na odgovarajuću objavu. 
+	Dodajemo je u div element s odgovarajućim IDjem.
+	Naime, za svaku obavijest postoji div element s IDjem nastalim konkatenacijom riječi "dodavanjeKom" i
+	ID-a dane obavijesti.
+	Prilikom klika na gumb unutar forme (s tekstom "Objavi!"), podaci se šalju PHP datoteci koja potom pokreće
+	njihovo spremanje u bazu podataka.
+	*/
 	$("body").on("click", ".dodajKomentare", function(event)
 	{
 		var id = $(this).prop("id").substring(8);
@@ -97,21 +112,4 @@ $(document).ready(function()
 			dodajKom = false;
 		}
 	});
-	
-	/*$("body").on("click", ".objaviKom", function(event)
-	{
-		var id = $(this).prop("id").substring(3);
-		var sadrzaj = $("#komArea" + id).val();
-		$.ajax(
-		{
-			url: "scoutbook.php?rt=ajax/objaviKomentar",
-			data: {id_obavijest: id, sadrzaj: sadrzaj},
-			type: "GET",
-			dataType: "json",
-			success: function(data)
-			{
-				
-			}
-		});
-	});*/
 });

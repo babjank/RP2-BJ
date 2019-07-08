@@ -10,9 +10,10 @@ $(document).ready(function()
         title: 'O patroli'
 	};
 	
+	// Dohvaćamo sve patrole unutar nekog odreda i potom na canvasu crtamo stablo koje prikazuje organizaciju tog odreda (čvor s imenom odreda i čvorove s imenima patrola kao njegovu djecu)
 	$.ajax(
 	{
-		url: "./scoutbook.php?rt=ajax",
+		url: "scoutbook.php?rt=ajax/troop",
 		data: {},
 		type: "GET",
 		dataType: "json",
@@ -47,10 +48,13 @@ $(document).ready(function()
 				ctx.fillText(patrolaList[i].ime_patrole, i * velicinaOdred + velicinaOdred / 2, 335);
 			}
 			
+			// Za svaku patrolu, postoji dialog s detaljima o njoj koji se pojavljuje nakon klika na odgovarajući pravokutnik (čvor) nacrtan na canvasu
 			for (var i = 0 ; i < patrole.length ; ++i) {
 				var div = $("<div style='display:none;' id='dialog" + i + "'>");
-				div.append(patrole[i].ime_patrole + "<br>Vođa: " + vode[i].charAt(0).toUpperCase()
-				+ vode[i].slice(1) + "<br>Razred: " + patrole[i].razred + ".<br>Stupanj znanja: ");
+				div.append(patrole[i].ime_patrole + 
+				"<br><a href='scoutbook.php?rt=profil&username=" + vode[i] + "'>" +
+		 		vode[i].charAt(0).toUpperCase() + vode[i].slice(1) + "</a>" + 
+				"<br>Razred: " + patrole[i].razred + ".<br>Stupanj znanja: ");
 				var stupanj;
 				if (patrole[i].stupanj_znanja === "zlatni")
 					stupanj = "gold";
@@ -68,39 +72,10 @@ $(document).ready(function()
   					});
   				});
 			}
-			
-			/*for (var i = 0 ; i < patrole.length ; ++i) {
-				$(function() {
-  					$("#dialog" + i).dialog({
-    					autoOpen : false, modal : true, show : "blind", hide : "blind"
-  					});
-  				});
-  			}*/
 		}
 	});
-	
-	/*$("#cnv").on("click", function(event)
-	{
-		var rect = this.getBoundingClientRect();
-		var x = event.clientX - rect.left, y = event.clientY - rect.top;
-		var velicinaOdred = 600 / brPatrola;
-		
-		var index = -1;
-		for (var i = 0 ; i < brPatrola ; ++i) {
-			if (x >= i * velicinaOdred + velicinaOdred / 2 - 50 && 
-				x <= i * velicinaOdred + velicinaOdred / 2 + 50) {
-				index = i;
-				break;	
-			}
-		}
-		
-		if (index !== -1) {
-			alert(patrole[i].ime_patrole + "\nVođa: " + vode[i].charAt(0).toUpperCase() 
-			+ vode[i].slice(1) + "\nRazred: " + patrole[i].razred + ".\nStupanj znanja: " 
-			+ patrole[i].stupanj_znanja);
-		}
-	});*/
   	
+  	// Reagiramo na klik na canvas - ako je kliknuto na neki od pravokutnika (čvorovima) s imenima patrola, pojavljuje se odgovarajući dialog
   	$("#cnv").on("click", function() {
   		var rect = this.getBoundingClientRect();
 		var x = event.clientX - rect.left, y = event.clientY - rect.top;

@@ -10,6 +10,7 @@
 	echo "<div id='lokacija'></div>";
 	echo "<div id='mapa'></div>";
 
+	// Ako je trenutno ulogirani korisnik vođa koji je započeo danu aktivnost, može vidjeti popis svih do tog trenutka prijavljenih korisnika aplikacije. Klikom na njihova korisnička imena, može vidjeti njihove profile
 	if ($mine){
 		echo "<span class='kategorija'>DO SADA SU PRIJAVLJENI: </span> <ul id='popis'>";
 		foreach ($izvidacList as $izvidac) {

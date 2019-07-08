@@ -1,6 +1,15 @@
 <?php require_once "view/_header.php"; ?>
 
 <?php
+	/*
+	Prikazujemo sve članove odgovarajuće patrole, odnosno njihova korisnička imena, zajedno s profilnim slikama
+	(ako ih imaju, tj. ako su se nekada ulogirali u aplikaciju).
+	Ako postoje poruke u razgovoru s danim korisnikom koje trenutno ulogirani korisnik još nije pročitao,
+	o tome ga se obavještava slikom pored korisničkog imena odgovarajućeg korisnika. 
+	Klikom na korisničko ime nekog od korisnika, trenutno ulogirani korisnik može vidjeti njihov profil te
+	s njima komunicirati (prikazuje se i element div s podacima o samom ulogiranom korisniku, ali sam sa sobom
+	ne može razgovarati).
+	*/
 	foreach($izvidaci as $izvidac)
 	{
 		echo "<div class='patrolMember' id='patrol" . $izvidac->username . "'>";
@@ -18,6 +27,7 @@
 			var username1 = "<?php echo $_SESSION['username'];?>";
 			var username2 = "<?php echo $izvidac->username;?>";
 
+			// Upit kojim se provjerava postoje li nepročitane poruke od danog korisnika i, ako postoje, to se prikazuje postavljanjem posebne slike pokraj korisničkog imena tog korisnika
 			$.ajax(
 			{
 				url: "scoutbook.php?rt=ajax/newMessage",

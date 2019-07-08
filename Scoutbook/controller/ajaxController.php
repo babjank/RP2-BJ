@@ -10,14 +10,16 @@ function sendJSONandExit($message)
 	exit(0);
 }
 
+// Klasa pomoću koje obrađujemo razne AJAX upite. Za svaku vrstu AJAX upita postoji odgovarajuća metoda
 class ajaxController
 {
-	function index()
+	function troop()
 	{
+		// Obrađujemo upit koji šalje skripta troop.js, kojim traži popis svih patrola unutar odreda i detalja o njima
 		$tus = new Service();
 
-		$patrolaList = $tus->getAllTroops(true);
-		$vode = [];
+		$patrolaList = $tus->getAllTroops(true); // Argument true nalaže funkciji da vrati asocijativno polje, a ne objekt klase Troop
+		$vode = []; // Za opis pojedine patrole, potreban nam je i njezin vođa
 		foreach ($patrolaList as $patrola)
 			$vode[] = $tus->getPatrolsLeader($patrola["ime_patrole"]);
 
@@ -30,24 +32,30 @@ class ajaxController
 
 	function chat()
 	{
+		// Obrađujemo upite koje šalje skripta chat.js, a pomoću kojih se ostvaruje funkcionalnost chata
 		$function = $_GET["function"];
 		$log = array();
 		$username1 = $_SESSION["username"];
 		$username2 = $_GET["username2"];
+		/* Razgovore među korisnicima spremamo u .txt datoteke. 
+		Za svaki par korisnika, postoji jedna datoteka s pohranjenim njihovim razgovorom. 
+		Njezin naziv dobivamo tako da konkateniramo leksički manje korisničko ime s _ 
+		i leksički većim korisničkim imenom.
+		*/
 		if (strcmp($username1, $username2) < 0)
 			$filename = "./chats/" . $username1 . "_" . $username2 . ".txt";
 		else
 			$filename = "./chats/" . $username2 . "_" . $username1 . ".txt";
 
+		/* Moguće su tri vrijednosti varijable function.
+		function = "getState" => stvaramo datoteku za pohranjivanje razgovora ako ona već ne postoji 
+		function = "update" => ako ima novih poruka, šaljemo ih skripti da ih ispiše korisniku
+		function = "send" => u odgovarajuću datoteku upisujemo nove poruke kao nove linije
+		*/
 		switch ($function) {
 			case ("getState"):
-				if (file_exists($filename)) {
-					$lines = file($filename);
-					//$log["state"] = count($lines);
-				} else {
+				if (!file_exists($filename))
 					fopen($filename, "w");
-					$lines = file($filename);
-				}
 				$log["state"] = 0;
 				break;
 
@@ -57,7 +65,7 @@ class ajaxController
 				$count = count($lines);
 				if ($state == $count) {
 					$log["state"] = $state;
-					$log["text"] = false;
+					$log["text"] = false; // Nema novih poruka
 				} else {
 					$text = array();
 					$log["state"] = $state + count($lines) - $state;
@@ -66,7 +74,7 @@ class ajaxController
 							$text[] = $line = str_replace("\n", "", $line);
 						}
 					}
-					$log["text"] = $text;
+					$log["text"] = $text; // Ima novih poruka, šaljemo ih skripti da ih prikaže korisniku
 				}
 				break;
 
@@ -90,6 +98,7 @@ class ajaxController
 
 	function news()
 	{
+		// Obrađujemo upit koji šalje skripta obavijesti.js, kojim traži sve obavijesti pohranjene u bazi podataka
 		$tus = new Service();
 
 		$objave = $tus->getNews();
@@ -101,6 +110,7 @@ class ajaxController
 
 	function getState($username1, $username2)
 	{
+		// Pomoćna funkcija kojom dohvaćamo broj linija u datoteci s pohranjenim razgovorom između osoba s korisničkim imenima username1 i username2 (ako ta datoteka ne postoji, vraćamo false)
 		if (strcmp($username1, $username2) < 0)
 			$filename = "./chats/" . $username1 . "_" . $username2 . ".txt";
 		else
@@ -113,6 +123,7 @@ class ajaxController
 
 	function newMessage()
 	{
+		// Obrađujemo upit kojim skripte nastoje saznati postoje li od odgovarajućeg korisnika koje trenutno ulogirani korisnik nije pročitao
 		$tus = new Service();
 		
 		$username2 = $_GET["username2"];
@@ -123,11 +134,13 @@ class ajaxController
 		$message = [];
 		$message["state"] = $state;
 		$message["procitano"] = $procitano;
+		// Saznajemo ima li novih poruka uspoređivanjem broja linija u odgovarajućoj datoteci i broja do sad pročitanih poruka od strane ulogiranog korisnika (iz razgovora s odgovarajućim korisnikom) iz baze podataka
 		sendJSONandExit($message);
 	}
 
 	function username()
 	{
+		// Obrađujemo upit za korisničkim imenom trenutno ulogiranog korisnika
 		$message = [];
 		$message["username"] = $_SESSION["username"];
 		sendJSONandExit($message);
@@ -135,7 +148,8 @@ class ajaxController
 
 	function komentari()
 	{
-		$id_obavijest = $_GET["id_obavijest"];
+		// Obrađujemo upit koji šalje skripta obavijesti.js, a kojim nastoji dohvatiti sve komentare na zadanoj obavijesti
+		$id_obavijest = $_GET["id_obavijest"]; // ID obavijesti čiji nas komentari zanimaju
 
 		$tus = new Service();
 
@@ -147,6 +161,7 @@ class ajaxController
 
 	function sviKomentari()
 	{
+		// Obrađujemo upit koji šalje skripta obavijesti.js, a kojim nastoji dohvatiti sve komentare
 		$tus = new Service();
 
 		$komentari = $tus->getComments();
@@ -157,6 +172,7 @@ class ajaxController
 
 	function calendar()
 	{
+		// Obrađujemo upite skripte calendar.js, a na koje odgovaramo slanjem svih aktivnosti
 		$tus = new Service();
 		$aktivnostList = $tus->getAllActivities();
 
@@ -173,6 +189,7 @@ class ajaxController
 
 	function mycalendar()
 	{
+		// Obrađujemo upite skripte mycalendar.js, a na koje odgovaramo slanjem svih aktivnosti odgovarajućeg korisnika
 		$tus = new Service();
 		$aktivnostList = $tus->getAcitivtiesByMemberId($_SESSION["id"]);
 
@@ -189,6 +206,7 @@ class ajaxController
 
 	function map()
 	{
+		// Obrađujemo upite skripte map.js, a na koje odgovaramo slanjem geografske širine i dužine aktivnosti sa zadnim IDjem
 		$tus = new Service();
 
 		$aktivnost = $tus->getActivityById($_SESSION["id_aktivnost"]);
@@ -201,6 +219,7 @@ class ajaxController
 	
 	function updateProcitano()
 	{
+		// Obrađujemo upit koji šalje skripta chat.js, a kojim ona traži da se osvježi broj pročitanih poruka odgovarajućeg korisnika od strane trenutno ulogiranog korisnika (kad updateamo chat, moramo i osvježiti taj broj)
 		$tus = new Service();
 	
 		$oib1 = $tus->getUserByUsername($_GET["username1"])->id;

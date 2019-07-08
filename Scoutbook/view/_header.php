@@ -20,6 +20,9 @@
 		<h3 id="username"><?php echo ucfirst($_SESSION["username"]); ?></h3>
 		<a id="logout" href="scoutbook.php?rt=login/logout">Logout</a>
 	</div>
+	<?php
+	// Navigacija s listom pomoću koje možemo birati što u aplikaciji želimo vidjeti; preusmjerava nas se na odgovarajuće stranice ovisno o našem odabiru
+	?>
 	<nav>
 		<ul id="nav">
 			<li><a class="nav" id="obavijesti" href="scoutbook.php?rt=troop/news">Obavijesti</a></li>

@@ -1,7 +1,7 @@
 <?php require_once "view/_prviloginHeader.php";
 
 if (isset($message))
-	echo $message . " Pokušajte ponovno.<br><br>"; ?>
+	echo "<div id='errorMsg'>" . $message . " Pokušajte ponovno.</div><br>"; ?>
 
 <form id="prviloginForm" method="post" action="scoutbook.php?rt=login/promijeniPodatke"
 	enctype="multipart/form-data">

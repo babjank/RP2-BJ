@@ -8,6 +8,7 @@ require_once "member.class.php";
 
 class Service
 {
+	// Na temelju korisničkog imena, dohvaćamo objekt klase User koji predstavlja korisnika s tim korisničkim imenom
 	function getUserByUsername($username)
 	{
 		try
@@ -27,6 +28,7 @@ class Service
 							$row["PASSWORD_HASH"], $row["ULOGIRAN"], $row["SLIKA"]);
 	}
 
+	// Na temelju OIB-a, dohvaćamo objekt klase User koji predstavlja korisnika s tim OIB-om
 	function getUserById($id)
 	{
 		try
@@ -46,7 +48,7 @@ class Service
 							$row["PASSWORD_HASH"], $row["ULOGIRAN"], $row["SLIKA"]);
 	}
 
-
+	// Na temelju ID-a, dohvaćamo objekt klase Troop koji predstavlja patrolu s tim IDjem
 	function getTroopById($id)
 	{
 		try
@@ -64,7 +66,11 @@ class Service
 			return new Troop($row["IME_PATROLE"], $row["RAZRED"], $row["STUPANJ_ZNANJA"], $row["ID_RADIONICA"]);
 	}
 
-
+	/* Dohvaćamo podatke svih patrola koje postoje u našemu odredu (i o kojima su podaci pohranjeni u 
+	bazi podataka).
+	Ako je argument $js jednak true, vraćamo polje asocijativnih polja s podacima o patrolama (ključevi su atributi
+	u tablici PATROLA u bazi podataka), a inače vraćamo polje objekata klase Troop.
+	*/
 	function getAllTroops($js)
 	{
 		try
@@ -88,6 +94,7 @@ class Service
 		return $arr;
 	}
 
+	// Na temelju ID-a, dohvaćamo objekt klase Activity koji predstavlja aktivnost s tim IDjem
 	function getActivityById($id)
 	{
 		try
@@ -105,7 +112,7 @@ class Service
 			return new Activity($row["ID"], $row["OIB"], $row["DATUM_ODRZAVANJA"], $row["MJESTO"], $row["OPIS"], $row["CIJENA"], $row["BROJ_CLANOVA"], $row["SIRINA"], $row["DUZINA"]);
 	}
 
-
+	// Dohvaćamo sve aktivnosti prisutne u bazi podataka
 	function getAllActivities()
 	{
 		try
@@ -125,6 +132,7 @@ class Service
 		return $arr;
 	}
 
+	// Na temelju OIB-a korisnika, dohvaćamo sve aktivnosti u kojima korisnik s tim OIB-om sudjeluje
 	function getAcitivtiesByMemberId($id_user)
 	{
 		try
@@ -146,6 +154,7 @@ class Service
 		return $arr;
 	}
 
+	// Na temelju IDja aktivnosti, dohvaćamo sve korisnike koji sudjeluju u toj aktivnosti
 	function getMembersByActivityId($id_activity)
 	{
 		try
@@ -163,7 +172,7 @@ class Service
 		return $arr;
 	}
 
-
+	// Mijenjamo korisničke podatke nekog korisnika (prilikom njegovog prvog ulogiravanja u aplikaciju)
 	function changeUserInfo($old_username, $username, $password, $slika)
 	{
 		try
@@ -177,6 +186,7 @@ class Service
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
 	}
 
+	// Provjeravamo je li član sa zadanim OIB-om vođa
 	function checkIfLeaderByID($id)
 	{
 		try
@@ -193,6 +203,7 @@ class Service
 		return true;
 	}
 
+	// Provjeravamo je li član sa zadanim korisničkim imenom vođa
 	function checkIfLeaderByUsername($username)
 	{
 		try
@@ -210,6 +221,7 @@ class Service
 		return true;
 	}
 
+	// Ubacujemo novog člana u tablicu IZVIDAC u bazi podataka (nakon što ga putem forme doda neki član koji je vođa)
 	function insertMember($oib, $ime, $prezime, $adresa, $email, $ime_patrole)
 	{
 		$errorMsg = "OK";
@@ -231,6 +243,7 @@ class Service
 		return $errorMsg;
 	}
 
+	// U bazi podataka pohranjujemo podatak o sudjelovanju odgovarajućeg korisnika na odgovarajućoj aktivnosti
 	function insertMemberOfActivity($id_activity, $id_user)
 	{
 		$errorMsg = 'OK';
@@ -272,6 +285,7 @@ class Service
 		return $errorMsg;
 	}
 
+	// Dohvaćamo ime patrole čiji je vođa korisnik sa zadanim OIB-om
 	function getLeadersPatrol($id)
 	{
 		try
@@ -287,6 +301,7 @@ class Service
 		return $row["IME_PATROLE"];
 	}
 
+	// Pomoćna funkcija kojom dohvaćamo maksimalnu vrijednost atributa ID unutar tablice AKTIVNOST u bazi podataka
 	function getMaxId()
 	{
 		try
@@ -308,6 +323,7 @@ class Service
 		return $max;
 	}
 
+	// U tablicu AKTIVNOST u bazi podataka ubacujemo novu aktivnost (nakon što je putem odgovarajuće forme doda neki korisnik koji je vođa)
 	function insertActivity($id, $mjesto, $datum, $cijena, $opis, $sirina, $duljina)
 	{
 		$activityId = $this->getMaxId() + 1;
@@ -337,6 +353,7 @@ class Service
 		return [$errorMsg, $activityId];
 	}
 
+	// Dohvaćamo sve korisnike koji su članovi patrole s odgovarajućim imenom patrole
 	function getUsersByPatrol($ime_patrole)
 	{
 		try
@@ -356,6 +373,7 @@ class Service
 		return $arr;
 	}
 
+	// Dohvaćamo korisničko ime vođe patrole s odgovarajućim imenom patrole
 	function getPatrolsLeader($ime_patrole)
 	{
 		try
@@ -372,6 +390,7 @@ class Service
 		return $row["USERNAME"];
 	}
 
+	// Dohvaćamo sve obavijesti trenutno zapisane u bazi podataka
 	function getNews()
 	{
 		try
@@ -390,6 +409,7 @@ class Service
 		return $arr;
 	}
 
+	// Ubacujemo novu obavijest u tablicu OBAVIJESTI u bazi podataka (nakon što je putem odgovarajuće forme doda neki korisnik koji je vođa)
 	function insertNews($sadrzaj, $naslov, $datum, $autor)
 	{
 		try
@@ -403,6 +423,7 @@ class Service
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
 	}
 
+	// Dohvaćamo sve komentare na obavijesti sa zadanim IDjem
 	function getCommentsById($id_obavijesti)
 	{
 		try
@@ -422,6 +443,7 @@ class Service
 		return $arr;
 	}
 
+	// Dohvaćamo sve vrijednosti atributa ID unutar tablice OBAVIJESTI
 	function getNewsIds()
 	{
 		try
@@ -439,6 +461,7 @@ class Service
 		return $arr;
 	}
 
+	// Dohvaćamo sve komentare svih obavijesti
 	function getComments()
 	{
 		$newsIds = $this->getNewsIds();
@@ -454,6 +477,7 @@ class Service
 		return $komentari;
 	}
 
+	// Dodajemo novi komentar u tablicu KOMENTAR u bazi podataka (sa zadanim sadržajem, datumom, OIB-om autora i IDjem obavijesti na koju je dodan)
 	function addComment($sadrzaj, $datum, $oib, $id_obavijest)
 	{
 		try
@@ -467,6 +491,7 @@ class Service
 		catch(PDOException $e) { exit("PDO error " . $e->getMessage()); }
 	}
 	
+	// Dohvaćamo broj poruka koje je korisnik s OIB-om oib1 pročitao iz razgovora s korisnikom s OIB-om oib2
 	function getReadMessages($oib1, $oib2) {
 		try
 		{
@@ -483,6 +508,7 @@ class Service
 			return false;
 	}
 	
+	// Osvježavamo stanje pročitanih poruka u razgovoru između korisnika zadanih OIB-ovima oib1 i oib2 (pročitanih od strane korisnika s OIB-om oib1)
 	function updateReadMessages($oib1, $oib2, $state) {
 		try
 		{
